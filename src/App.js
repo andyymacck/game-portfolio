@@ -10,13 +10,49 @@ function App() {
       </header>
       <section className="showcase">
         <h2>Vertical Slices</h2>
-        {/* Add your vertical slice components or video embeds here */}
-        <div className="slice">
-          <h3>Slice Title</h3>
-          <video controls src="your-video.mp4" />
-          <p>Description of this slice...</p>
+        <div className="slices-grid">
+          <div className="slice">
+            <video controls>
+              <source src="your-video-1.mp4" type="video/mp4" />
+            </video>
+            <div className="slice-content">
+              <h3>Project One</h3>
+              <p className="slice-description">A brief overview of the first vertical slice...</p>
+              <details className="slice-details">
+                <summary>Read More</summary>
+                <p>Detailed description of the project, including technical specifications, challenges overcome, and key features implemented.</p>
+              </details>
+            </div>
+          </div>
+
+          <div className="slice">
+            <video controls>
+              <source src="your-video-2.mp4" type="video/mp4" />
+            </video>
+            <div className="slice-content">
+              <h3>Project Two</h3>
+              <p className="slice-description">A brief overview of the second vertical slice...</p>
+              <details className="slice-details">
+                <summary>Read More</summary>
+                <p>Detailed description of the project, including technical specifications, challenges overcome, and key features implemented.</p>
+              </details>
+            </div>
+          </div>
+
+          <div className="slice">
+            <video controls>
+              <source src="your-video-3.mp4" type="video/mp4" />
+            </video>
+            <div className="slice-content">
+              <h3>Project Three</h3>
+              <p className="slice-description">A brief overview of the third vertical slice...</p>
+              <details className="slice-details">
+                <summary>Read More</summary>
+                <p>Detailed description of the project, including technical specifications, challenges overcome, and key features implemented.</p>
+              </details>
+            </div>
+          </div>
         </div>
-        {/* Repeat for more slices */}
       </section>
     </div>
   );

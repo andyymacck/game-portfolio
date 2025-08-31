@@ -82,25 +82,6 @@ html, body {
   z-index: 999;
 }
 
-.loading-bar {
-  height: 2px;
-  background: #00baff;
-  box-shadow: 0 0 8px #00baff;
-  animation: loading 2s ease-in-out infinite;
-  position: relative;
-}
-
-.loading-bar::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, #00baff, transparent);
-  animation: loading 1.5s ease-in-out infinite;
-}
-
 header {
   text-align: center;
   margin-top: 40px;
@@ -128,6 +109,24 @@ header p {
 
 .showcase {
   margin-top: 40px;
+  padding: 0 20px;
+}
+
+.showcase h2 {
+  color: #000000;
+  text-shadow: 0 0 8px #00baff;
+  margin-bottom: 30px;
+  text-align: center;
+  animation: textFlicker 4s infinite;
+}
+
+.slices-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
 .slice {
@@ -147,27 +146,83 @@ header p {
   box-shadow: 0 4px 20px #00baff, 0 0 0 4px #00baff inset;
 }
 
-.slice h3 {
-  margin-top: 0;
-  color: #00baff;
-  text-shadow: 0 0 4px #fff, 0 0 8px #00baff;
-  font-size: 1.2rem;
-  text-transform: uppercase;
-  animation: textFlicker 3s infinite;
-}
-
 .slice video {
   width: 100%;
-  max-width: 600px;
+  max-width: 100%;
   border-radius: 2px;
-  margin: 15px 0;
+  margin-bottom: 15px;
   border: 2px solid #505050;
   background: #232323;
   box-shadow: 0 0 16px #00baff;
   transition: all 0.3s ease;
+  cursor: pointer;
 }
 
 .slice video:hover {
   transform: scale(1.02);
   box-shadow: 0 0 24px #00baff;
+}
+
+.slice-content {
+  padding: 10px 0;
+}
+
+.slice h3 {
+  color: #00baff;
+  text-shadow: 0 0 4px #fff, 0 0 8px #00baff;
+  font-size: 1.2rem;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+  animation: textFlicker 3s infinite;
+}
+
+.slice-description {
+  font-size: 0.9rem;
+  line-height: 1.4;
+  color: #e0e0e0;
+  margin-bottom: 15px;
+}
+
+.slice-details {
+  background: rgba(0, 0, 0, 0.5);
+  padding: 15px;
+  border: 1px solid #505050;
+  border-radius: 2px;
+  transition: all 0.3s ease;
+}
+
+.slice-details[open] {
+  border-color: #00baff;
+  box-shadow: 0 0 16px rgba(0, 186, 255, 0.3);
+}
+
+.slice-details summary {
+  color: #00baff;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  cursor: pointer;
+  text-shadow: 0 0 4px #00baff;
+  transition: color 0.3s ease;
+}
+
+.slice-details summary:hover {
+  color: #ffffff;
+}
+
+.slice-details p {
+  margin-top: 10px;
+  font-size: 0.85rem;
+  line-height: 1.5;
+  color: #e0e0e0;
+}
+
+@media (max-width: 768px) {
+  .slices-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  header h1 {
+    font-size: 2rem;
+  }
 }
