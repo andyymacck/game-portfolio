@@ -1,28 +1,129 @@
+
+@keyframes glowPulse {
+  0% { text-shadow: 0 0 12px #00baff, 0 0 8px #00baff; }
+  50% { text-shadow: 0 0 24px #00baff, 0 0 16px #00baff; }
+  100% { text-shadow: 0 0 12px #00baff, 0 0 8px #00baff; }
+}
+
+@keyframes borderPulse {
+  0% { box-shadow: 0 2px 12px #232323, 0 0 0 4px #00baff inset; }
+  50% { box-shadow: 0 2px 24px #00baff, 0 0 0 4px #00baff inset; }
+  100% { box-shadow: 0 2px 12px #232323, 0 0 0 4px #00baff inset; }
+}
+
+@keyframes scanline {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(100vh); }
+}
+
+@keyframes loading {
+  0% { width: 0; }
+  100% { width: 100%; }
+}
+
+@keyframes ps2Startup {
+  0% { opacity: 0; transform: scale(0.95); }
+  50% { opacity: 1; transform: scale(1.02); }
+  100% { opacity: 1; transform: scale(1); }
+}
+
+@keyframes textFlicker {
+  0% { opacity: 0.8; }
+  50% { opacity: 1; }
+  100% { opacity: 0.8; }
+}
+
+*, *::before, *::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  background-color: #b0b0b0;
+  min-height: 100vh;
+  width: 100%;
+}
+
 .portfolio-container {
-  font-family: 'Press Start 2P', 'Segoe UI', Arial, sans-serif;
-  background: linear-gradient(135deg, #2d1e4a 0%, #1a2a6c 100%);
-  color: #e0e0e0;
+  font-family: 'Orbitron', 'Segoe UI', Arial, sans-serif;
+  background: #b0b0b0;
+  color: #232323;
   min-height: 100vh;
   padding: 0 20px;
+  position: relative;
+  animation: ps2Startup 1.5s ease-out;
+}
+
+.portfolio-container::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: rgba(0, 186, 255, 0.1);
+  animation: scanline 8s linear infinite;
+  pointer-events: none;
+  z-index: 1000;
+}
+
+.portfolio-container::after {
+  content: '';
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  right: 20px;
+  bottom: 20px;
+  border: 2px solid rgba(0, 186, 255, 0.3);
+  pointer-events: none;
+  z-index: 999;
+}
+
+.loading-bar {
+  height: 2px;
+  background: #00baff;
+  box-shadow: 0 0 8px #00baff;
+  animation: loading 2s ease-in-out infinite;
+  position: relative;
+}
+
+.loading-bar::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, #00baff, transparent);
+  animation: loading 1.5s ease-in-out infinite;
 }
 
 header {
   text-align: center;
   margin-top: 40px;
-  text-shadow: 2px 2px 0 #00ffea, 4px 4px 0 #ff00c8;
+  text-shadow: 0 0 8px #00baff, 0 0 2px #fff;
+  animation: ps2Startup 1.5s ease-out;
 }
 
 header h1 {
-  font-size: 2.2rem;
+  font-size: 2.5rem;
   margin-bottom: 0.5rem;
   letter-spacing: 2px;
-  color: #00ffea;
+  color: #000000;
+  text-transform: uppercase;
+  text-shadow: 0 0 12px #00baff, 0 0 8px #00baff;
+  animation: glowPulse 3s infinite ease-in-out;
 }
 
 header p {
-  font-size: 1rem;
-  color: #ff00c8;
+  font-size: 1.1rem;
+  color: #505050;
   margin-bottom: 10px;
+  text-shadow: 0 0 4px #00baff;
+  animation: textFlicker 3s infinite;
 }
 
 .showcase {
@@ -30,26 +131,43 @@ header p {
 }
 
 .slice {
-  background: rgba(34, 34, 52, 0.95);
-  border: 2px solid #00ffea;
-  border-radius: 8px;
+  background: rgba(0, 0, 0, 0.9);
+  border: 2px solid #505050;
+  border-radius: 2px;
   padding: 20px;
   margin-bottom: 30px;
-  box-shadow: 0 4px 16px #000, 0 0 0 4px #ff00c8 inset;
+  box-shadow: 0 2px 12px #232323, 0 0 0 4px #00baff inset;
+  color: #ffffff;
+  transition: transform 0.3s ease;
+  animation: borderPulse 4s infinite ease-in-out;
+}
+
+.slice:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 4px 20px #00baff, 0 0 0 4px #00baff inset;
 }
 
 .slice h3 {
   margin-top: 0;
-  color: #ffec00;
-  text-shadow: 1px 1px 0 #00ffea;
-  font-size: 1.1rem;
+  color: #00baff;
+  text-shadow: 0 0 4px #fff, 0 0 8px #00baff;
+  font-size: 1.2rem;
+  text-transform: uppercase;
+  animation: textFlicker 3s infinite;
 }
 
 .slice video {
   width: 100%;
   max-width: 600px;
-  border-radius: 4px;
+  border-radius: 2px;
   margin: 15px 0;
-  border: 2px solid #ff00c8;
-  background: #000;
+  border: 2px solid #505050;
+  background: #232323;
+  box-shadow: 0 0 16px #00baff;
+  transition: all 0.3s ease;
+}
+
+.slice video:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 24px #00baff;
 }
