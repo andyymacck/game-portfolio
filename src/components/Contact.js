@@ -2,50 +2,108 @@ import React, { useState } from 'react';
 
 const Contact = () => {
   const [formData, setFormData] = useState({ name: "", email: "", message: "" });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitStatus, setSubmitStatus] = useState(null);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    fetch("https://formspree.io/f/your-formspree-id", {
-      method: "POST",
-      headers: { "Content-Type": "application/x-www-form-urlencoded" },
-      body: `name=${formData.name}&email=${formData.email}&message=${formData.message}`
-    })
-    .then(() => alert("Message sent!"))
-    .catch((err) => console.error(err));
+    setIsSubmitting(true);
+    
+    try {
+      await fetch("https://formspree.io/f/your-formspree-id", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData)
+      });
+      
+      setSubmitStatus('success');
+      setFormData({ name: "", email: "", message: "" });
+      
+      // Reset status after 5 seconds
+      setTimeout(() => setSubmitStatus(null), 5000);
+    } catch (err) {
+      console.error(err);
+      setSubmitStatus('error');
+      
+      // Reset status after 5 seconds
+      setTimeout(() => setSubmitStatus(null), 5000);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
-    <section id="contact" className="bg-gray-800 text-white py-8">
-      <div className="max-w-6xl mx-auto">
-        <h2 className="text-2xl font-bold mb-4">Contact Me</h2>
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <input 
-            type="text" 
-            placeholder="Your Name"
-            value={formData.name}
-            onChange={(e) => setFormData({...formData, name: e.target.value})}
-            required
-            className="w-full p-2 border rounded"
-          />
-          <input 
-            type="email" 
-            placeholder="Your Email"
-            value={formData.email}
-            onChange={(e) => setFormData({...formData, email: e.target.value})}
-            required
-            className="w-full p-2 border rounded"
-          />
-          <textarea 
-            placeholder="Message"
-            value={formData.message}
-            onChange={(e) => setFormData({...formData, message: e.target.value})}
-            required
-            className="w-full p-2 border rounded"
-          />
-          <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded">Send</button>
+    <div className="contact-section">
+      <div className="grain"></div>
+      <div className="scanline" style={{animation: 'scanline 6s linear infinite'}}></div>
+      <div className="scanline" style={{animation: 'scanline 8s linear infinite', opacity: 0.4}}></div>
+      <div className="scanline-overlay"></div>
+      <div className="contact-card">
+        <h2>Contact Me</h2>
+        {submitStatus === 'success' && (
+          <div className="status-message success">
+            Message sent successfully!
+          </div>
+        )}
+        {submitStatus === 'error' && (
+          <div className="status-message error">
+            Failed to send message. Please try again.
+          </div>
+        )}
+        <form onSubmit={handleSubmit} className="contact-form">
+          <div className="form-group">
+            <input 
+              type="text" 
+              placeholder="Your Name"
+              value={formData.name}
+              onChange={(e) => setFormData({...formData, name: e.target.value})}
+              required
+              className="cyber-input"
+            />
+            <div className="input-glow"></div>
+          </div>
+          <div className="form-group">
+            <input 
+              type="email" 
+              placeholder="Your Email"
+              value={formData.email}
+              onChange={(e) => setFormData({...formData, email: e.target.value})}
+              required
+              className="cyber-input"
+            />
+            <div className="input-glow"></div>
+          </div>
+          <div className="form-group">
+            <textarea 
+              placeholder="Your Message"
+              value={formData.message}
+              onChange={(e) => setFormData({...formData, message: e.target.value})}
+              required
+              className="cyber-textarea"
+              rows="5"
+            />
+            <div className="input-glow"></div>
+          </div>
+          <button 
+            type="submit" 
+            className="submit-btn"
+            disabled={isSubmitting}
+          >
+            {isSubmitting ? (
+              <>
+                <span className="loading-spinner"></span>
+                Sending...
+              </>
+            ) : (
+              <>
+                Send Message
+                <span className="btn-glow"></span>
+              </>
+            )}
+          </button>
         </form>
       </div>
-    </section>
+    </div>
   );
 };
 
