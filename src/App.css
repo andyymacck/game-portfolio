@@ -226,3 +226,44 @@ header p {
     font-size: 2rem;
   }
 }
+
+.work-experience {
+  margin-top: 3rem;
+  padding: 2rem;
+}
+
+.work-experience h2 {
+  text-align: center;
+  margin-bottom: 1.5rem;
+  font-size: 1.8rem;
+  color: #fff;
+}
+
+.experience-card {
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+  padding: 2rem;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.experience-entry {
+  margin-bottom: 1.5rem;
+}
+
+.experience-entry:last-child {
+  margin-bottom: 0;
+}
+
+.experience-entry h3 {
+  font-size: 1.2rem;
+  color: #ffcc66;
+  margin-bottom: 0.5rem;
+}
+
+.experience-entry p {
+  color: #ddd;
+  line-height: 1.6;
+}
