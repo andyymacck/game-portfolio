@@ -1,37 +1,14 @@
-import React, { useRef } from 'react';
-import { useLoader } from '../contexts/LoaderContext';
+import React from 'react';
 
 const Home = () => {
-  const { showLoader, hideLoader } = useLoader();
-  const iframeRef = useRef(null);
-
   return (
     <div className="home-container">
       <div className="scanline-layer">
         <div className="scanline blue slow"></div>
         <div className="scanline cyan fast"></div>
-        <div className="scanline green medium"></div>
       </div>
       <header>
-        {/* split title into per-letter spans so each letter can drift independently */}
-        {(() => {
-          const title = 'Andy Mackay';
-          return (
-            <h1 className="title" data-text={title} aria-label={title}>
-              {title.split('').map((ch, i) => (
-                <span
-                  key={i}
-                  className="char"
-                  // use CSS custom property for staggered delays
-                  style={{ '--i': i }}
-                  aria-hidden="true"
-                >
-                  {ch === ' ' ? '\u00A0' : ch}
-                </span>
-              ))}
-            </h1>
-          );
-        })()}
+        <h1 data-text="Andy Mackay">Andy Mackay</h1>
         <p>Game Developer Portfolio</p>
       </header>
 
@@ -68,15 +45,7 @@ const Home = () => {
                   alt="Game Preview" 
                   className="game-thumbnail"
                 />
-                <button
-                  className="play-preview-btn"
-                  onClick={() => {
-                    // show preview and trigger loader until iframe signals ready
-                    const pc = document.querySelector('.preview-container');
-                    if (pc) pc.classList.add('show-game');
-                    showLoader('Launching Game...');
-                  }}
-                >
+                <button className="play-preview-btn" onClick={() => document.querySelector('.preview-container').classList.add('show-game')}>
                   <span className="play-icon">▶</span>
                   Play Game
                 </button>
@@ -86,19 +55,11 @@ const Home = () => {
                   <div className="loading-spinner"></div>
                   <p>Loading Game...</p>
                 </div>
-                <iframe
-                  ref={iframeRef}
-                  src="/webgl-builds/game/index.html"
+                <iframe 
+                  src="/webgl-builds/game/index.html" 
                   title="Featured Unity WebGL Game"
                   allow="autoplay; fullscreen"
                   className="game-frame"
-                  onLoad={() => {
-                    // iframe finished loading — hide site loader
-                    try { hideLoader(); } catch (e) {}
-                    // also hide the internal loading overlay if present
-                    const lo = document.querySelector('.game-view .loading-overlay');
-                    if (lo) lo.style.display = 'none';
-                  }}
                 ></iframe>
                 <button className="close-btn" onClick={() => document.querySelector('.preview-container').classList.remove('show-game')}>✕</button>
               </div>
@@ -131,7 +92,7 @@ const Home = () => {
                 <img src="/images/project1-thumb.jpg" alt="Project One Thumbnail" />
                 <button 
                   className="play-overlay" 
-                  onClick={() => { document.getElementById('video-modal-1').classList.add('show'); try { showLoader('Loading Video...'); } catch (e) {} }}
+                  onClick={() => document.getElementById('video-modal-1').classList.add('show')}
                 >
                   <span className="play-icon">▶</span>
                 </button>
@@ -142,16 +103,7 @@ const Home = () => {
                     <div className="loading-spinner"></div>
                     <p>Loading Video...</p>
                   </div>
-                  <video
-                    controls
-                    onCanPlay={() => {
-                      try { hideLoader(); } catch (e) {}
-                      const modal = document.getElementById('video-modal-1');
-                      const lo = modal && modal.querySelector('.loading-overlay');
-                      if (lo) lo.style.display = 'none';
-                    }}
-                    onLoadStart={() => { try { showLoader('Loading Video...'); } catch (e) {} }}
-                  >
+                  <video controls>
                     <source src="/videos/project1.mp4" type="video/mp4" />
                   </video>
                   <button 
@@ -183,7 +135,7 @@ const Home = () => {
                 <img src="/images/project2-thumb.jpg" alt="Project Two Thumbnail" />
                 <button 
                   className="play-overlay" 
-                  onClick={() => { document.getElementById('video-modal-2').classList.add('show'); try { showLoader('Loading Video...'); } catch (e) {} }}
+                  onClick={() => document.getElementById('video-modal-2').classList.add('show')}
                 >
                   <span className="play-icon">▶</span>
                 </button>
@@ -194,11 +146,7 @@ const Home = () => {
                     <div className="loading-spinner"></div>
                     <p>Loading Video...</p>
                   </div>
-                  <video
-                    controls
-                    onCanPlay={() => { try { hideLoader(); } catch (e) {} }}
-                    onLoadStart={() => { try { showLoader('Loading Video...'); } catch (e) {} }}
-                  >
+                  <video controls>
                     <source src="/videos/project2.mp4" type="video/mp4" />
                   </video>
                   <button 
@@ -230,7 +178,7 @@ const Home = () => {
                 <img src="/images/project3-thumb.jpg" alt="Project Three Thumbnail" />
                 <button 
                   className="play-overlay" 
-                  onClick={() => { document.getElementById('video-modal-3').classList.add('show'); try { showLoader('Loading Video...'); } catch (e) {} }}
+                  onClick={() => document.getElementById('video-modal-3').classList.add('show')}
                 >
                   <span className="play-icon">▶</span>
                 </button>
@@ -241,11 +189,7 @@ const Home = () => {
                     <div className="loading-spinner"></div>
                     <p>Loading Video...</p>
                   </div>
-                  <video
-                    controls
-                    onCanPlay={() => { try { hideLoader(); } catch (e) {} }}
-                    onLoadStart={() => { try { showLoader('Loading Video...'); } catch (e) {} }}
-                  >
+                  <video controls>
                     <source src="/videos/project3.mp4" type="video/mp4" />
                   </video>
                   <button 

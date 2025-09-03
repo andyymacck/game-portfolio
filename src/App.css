@@ -1,14 +1,19 @@
 
 @keyframes glow {
-  0% { text-shadow: 0 0 8px rgba(0, 186, 255, 0.5), 0 0 4px rgba(0, 186, 255, 0.4); }
-  50% { text-shadow: 0 0 16px rgba(0, 186, 255, 0.6), 0 0 8px rgba(0, 186, 255, 0.5); }
-  100% { text-shadow: 0 0 8px rgba(0, 186, 255, 0.5), 0 0 4px rgba(0, 186, 255, 0.4); }
+  0% { text-shadow: 0 0 12px #00baff, 0 0 8px #00baff; }
+  50% { text-shadow: 0 0 24px #00baff, 0 0 16px #00baff; }
+  100% { text-shadow: 0 0 12px #00baff, 0 0 8px #00baff; }
 }
 
 @keyframes pulse {
   0% { transform: scale(1); opacity: 0.85; }
   50% { transform: scale(1.005); opacity: 1; }
   100% { transform: scale(1); opacity: 0.85; }
+}
+
+@keyframes scanline {
+  0% { transform: translateY(-100%); }
+  100% { transform: translateY(100vh); }
 }
 
 @keyframes startup {
@@ -18,33 +23,9 @@
 }
 
 @keyframes chromaShift {
-  /* Subtler CRT chroma for title with a faint cyan accent */
-  0% { text-shadow: 1.5px 0 0 rgba(200,255,120,0.32), 0 0 2px rgba(0,186,255,0.12), -1.5px 0 0 rgba(255,195,60,0.28); }
-  40% { text-shadow: -1px 0.6px 0 rgba(200,255,120,0.26), 0 0 1.5px rgba(0,186,255,0.10), 1px -0.6px 0 rgba(255,195,60,0.26); }
-  60% { text-shadow: 1px -0.6px 0 rgba(200,255,120,0.26), 0 0 1.5px rgba(0,186,255,0.10), -1px 0.6px 0 rgba(255,195,60,0.26); }
-  100% { text-shadow: 1.5px 0 0 rgba(200,255,120,0.32), 0 0 2px rgba(0,186,255,0.12), -1.5px 0 0 rgba(255,195,60,0.28); }
-}
-
-@keyframes letterDrift {
-  /* slow, smooth pulsate (scale + slight vertical float) to mimic card pulse */
-  0% { transform: translateY(0) scale(1); }
-  40% { transform: translateY(-1.2px) scale(1.01); }
-  60% { transform: translateY(0.6px) scale(0.995); }
-  100% { transform: translateY(0) scale(1); }
-}
-
-/* Pulsing CRT color intensity for chroma fringe */
-@keyframes chromaPulse {
-  0% {
-  /* subtle warm pulse with a faint cyan glint; increased blur for diffusion */
-  text-shadow: -1.5px 0 0 rgba(200,255,120,0.16), 0 0 2px rgba(0,186,255,0.10), 1.5px 0 0 rgba(255,195,60,0.16), 0 0 8px rgba(0,0,0,0.55);
-  }
-  50% {
-  text-shadow: -1.5px 0 6px rgba(200,255,120,0.42), 0 0 10px rgba(0,186,255,0.18), 1.5px 0 6px rgba(255,195,60,0.42), 0 0 10px rgba(0,0,0,0.65);
-  }
-  100% {
-  text-shadow: -1.5px 0 0 rgba(200,255,120,0.16), 0 0 2px rgba(0,186,255,0.10), 1.5px 0 0 rgba(255,195,60,0.16), 0 0 8px rgba(0,0,0,0.55);
-  }
+  0% { text-shadow: 2px 0 0 #ff000060, -2px 0 0 #00ff0060; }
+  50% { text-shadow: -2px 0 0 #ff000060, 2px 0 0 #00ff0060; }
+  100% { text-shadow: 2px 0 0 #ff000060, -2px 0 0 #00ff0060; }
 }
 
 *, *::before, *::after {
@@ -125,6 +106,14 @@ header {
   margin: 0;
   background: transparent;
   z-index: 1;
+}
+
+.content-wrapper {
+  flex: 1;
+  padding: 0 20px;
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
 }
 
 /* Navigation styles */
@@ -287,37 +276,6 @@ html, body {
   position: relative;
   z-index: 2;
 }
-/* InitialLoader overlay (site-level boot / navigation loader) */
-.initial-loader {
-  position: fixed;
-  inset: 0;
-  z-index: 9999; /* on top of everything */
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: radial-gradient(ellipse at center, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.95) 70%);
-  backdrop-filter: blur(4px) saturate(0.9);
-}
-/* initial-loader uses the project's `.loading-overlay` + `.loading-spinner` markup */
-
-/* InitialLoader uses the global .loading-spinner rules defined below so
-  we don't override the site's spinner styling here. */
-
-/* entrance / exit for initial loader */
-.initial-loader.entering {
-  opacity: 0;
-  animation: loader-fade-in 420ms cubic-bezier(.2,.9,.2,1) forwards;
-}
-.initial-loader.exiting {
-  animation: loader-fade-out 520ms cubic-bezier(.2,.9,.2,1) forwards;
-}
-
-@keyframes loader-fade-in {
-  to { opacity: 1; }
-}
-@keyframes loader-fade-out {
-  to { opacity: 0; transform: translateY(-10px) scale(.995); }
-}
 
 header {
   text-align: center;
@@ -350,53 +308,13 @@ header h1 {
   font-weight: 600;
   color: #000000;
   text-transform: uppercase;
-  /* subtle, static halo that matches the site's cyan styling */
-  /* slightly stronger halo blur for a softer CRT bloom */
-  text-shadow: 
-    0 0 8px rgba(0,186,255,0.18),
-    0 1px 5px rgba(0,0,0,0.30),
-    0 0 6px rgba(0,150,200,0.12);
+  text-shadow: 0 0 12px #00baff, 0 0 8px #00baff;
   position: relative;
-  /* subtle animated CRT feel: small pop, gentle glow, and chroma shift */
-  /* much slower animations for a slow, sensual CRT feel */
-  animation: titlePop 9s ease-in-out infinite, glow 9s ease-in-out infinite, chromaShift 18s linear infinite, letterDrift 18s ease-in-out infinite;
+  animation: 
+    titlePop 3s ease-in-out infinite,
+    glowPulse 3s infinite ease-in-out,
+    chromaShift 8s infinite;
 }
-
-/* Per-letter drift for title */
-.title { display: inline-block; position: relative; }
-.title .char {
-  display: inline-block;
-  will-change: transform, text-shadow;
-  /* slow pulsate drift per-letter + pulsing CRT chroma fringe */
-  animation: letterDrift 18s cubic-bezier(.2,.7,.2,1) infinite, chromaPulse 12s ease-in-out infinite;
-  /* stagger only the drift (first animation) so letters pulse slightly out-of-phase */
-  animation-delay: calc(var(--i) * 0.18s), 0s;
-  /* baseline shadow (chromaPulse will modulate intensity) */
-  /* quieter baseline fringe with a faint cyan hint in the middle; increased blur for diffusion */
-  text-shadow: -1.5px 0 0 rgba(200,255,120,0.14), 0 0 1.5px rgba(0,186,255,0.08), 1.5px 0 0 rgba(255,195,60,0.14), 0 0 8px rgba(0,0,0,0.55);
-}
-
-.title .char:nth-child(odd) { opacity: 0.98; }
-.title .char:nth-child(even) { opacity: 0.95; }
-
-.title .char:hover { transform: translateY(-2px) scale(1.02); }
-
-/* very subtle static/grain overlay for the title to give a CRT texture */
-.title::after {
-  content: '';
-  position: absolute;
-  left: -6px;
-  right: -6px;
-  top: -6px;
-  bottom: -6px;
-  pointer-events: none;
-  opacity: 0.06;
-  mix-blend-mode: screen;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64' viewBox='0 0 64 64'%3E%3Cfilter id='f'%3E%3CfeTurbulence baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23f)'/%3E%3C/svg%3E");
-  background-size: 100% 100%;
-  filter: blur(0.8px);
-}
-
 
 header p {
   font-size: 1.4rem;
@@ -719,7 +637,12 @@ header p {
   backdrop-filter: blur(1px);
 }
 
-/* .game-card defined later with full featured styles; removed this duplicate */
+/* keep .game-card slightly more pronounced */
+.game-card {
+  background: rgba(0, 0, 0, 0.25);
+  border: 2px solid #505050;
+  box-shadow: 0 2px 12px rgba(35, 35, 35, 0.4), 0 0 0 4px #00baff inset;
+}
 
 /* duplicate about-card block removed */
 
@@ -751,7 +674,35 @@ header p {
   z-index: 1;
 }
 
-/* cleaned duplicate tv-static pseudo-elements: richer definitions remain below */
+.tv-static::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: 
+    url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.2' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%' height='100%' filter='url(%23noise)' opacity='0.15'/%3E%3C/svg%3E");
+  opacity: 0.15;
+  pointer-events: none;
+  z-index: 100;
+  animation: grainShift 8s steps(10) infinite;
+}
+
+.tv-static::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    rgba(0, 0, 0, 0.1) 0px,
+    rgba(0, 0, 0, 0.1) 1px,
+    transparent 1px,
+    transparent 2px
+  );
+  background-size: 100% 2px;
+  pointer-events: none;
+  z-index: 116;
+  opacity: 0.3;
+  animation: scanlineMove 10s linear infinite;
+}
 
 .tv-static::before {
   content: '';
@@ -795,14 +746,6 @@ header p {
   box-shadow: 0 0 20px currentColor;
   transform-origin: center;
   filter: blur(1px);
-}
-
-.scanline.green {
-  background: linear-gradient(90deg, rgba(160,255,140,0.06), rgba(180,255,120,0.12));
-  color: rgba(160,255,140,0.9);
-  height: 1px;
-  box-shadow: 0 0 10px rgba(160,255,140,0.12);
-  opacity: 0.55;
 }
 
 .tv-static::after {
@@ -864,11 +807,6 @@ header p {
   box-shadow: 0 0 15px rgba(0,150,200,0.4);
 }
 
-/* medium speed scanline used on the home page */
-.scanline.medium {
-  animation: scanline-move 11s linear infinite;
-}
-
 @keyframes scanline-move {
   0% { transform: translateY(-100%); }
   100% { transform: translateY(100vh); }
@@ -898,9 +836,22 @@ header p {
   animation: borderPulse 4s infinite ease-in-out;
 }
 
-/* Removed global .scanline rule (created an unintended static line).
-  Scanline elements are now scoped to .home-container and .tv-static
-  via `.home-container .scanline` and `.tv-static .scanline.*` rules. */
+.scanline {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(to right,
+    transparent 0%,
+    rgba(0, 186, 255, 0.8) 50%,
+    transparent 100%);
+  opacity: 0.6;
+  animation: scanline 6s linear infinite;
+  z-index: 3;
+  pointer-events: none;
+  box-shadow: 0 0 15px rgba(0, 186, 255, 0.5);
+}
 
 @keyframes scanline {
   0% { transform: translateY(-100%); }
@@ -1108,9 +1059,8 @@ header p {
   gap: 1rem;
   justify-content: center;
   margin-top: 2rem;
-  padding-top: 1rem;
-  /* remove the top divider line under the About description */
-  border-top: none;
+  padding-top: 1.5rem;
+  border-top: 1px solid rgba(0, 186, 255, 0.2);
 }
 
 .tech-stack span {
@@ -1134,7 +1084,7 @@ header p {
 
 /* Featured Game Styles */
 .game-card {
-  background: rgba(0, 0, 0, 0.7);
+  background: rgba(0, 0, 0, 0.9);
   border: 2px solid #505050;
   border-radius: 2px;
   padding: 20px;
@@ -1142,9 +1092,8 @@ header p {
   width: 100%;
   max-width: 1400px;
   margin: 0 auto;
-  animation: borderPulse 6s infinite ease-in-out;
+  animation: borderPulse 4s infinite ease-in-out;
   transition: transform 0.3s ease;
-  backdrop-filter: blur(1px);
 }
 
 .game-card:hover {
@@ -1156,31 +1105,29 @@ header p {
   text-align: center;
   margin-bottom: 2rem;
   padding: 1.5rem;
-  background: rgba(0, 0, 0, 0.75);
+  background: rgba(0, 0, 0, 0.9);
   border: 1px solid rgba(0, 186, 255, 0.3);
   border-radius: 2px;
-  box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
 }
 
 .game-info h3 {
   color: #00baff;
-  font-size: 1.4rem;
-  margin-bottom: 1rem;
-  text-shadow: 0 0 4px rgba(0, 186, 255, 0.25);
+  font-size: 1.3rem;
+  margin-bottom: 1.2rem;
+  text-shadow: 0 0 8px rgba(0, 186, 255, 0.5);
   letter-spacing: 1px;
   font-weight: 600;
 }
 
 .game-info p {
   color: #ffffff;
-  line-height: 1.7;
+  line-height: 1.6;
   font-size: 1rem;
-  text-shadow: none;
-  opacity: 1;
-  max-width: 820px;
+  text-shadow: 0 0 1px rgba(255, 255, 255, 0.5);
+  opacity: 0.95;
+  max-width: 800px;
   margin: 0 auto;
-  font-weight: 600;
-  letter-spacing: 0.4px;
 }
 
 .preview-container {
@@ -1344,24 +1291,13 @@ header p {
   text-shadow: 0 0 4px rgba(0, 186, 255, 0.5);
 }
 
-.game-footer .control-info span {
-  background: linear-gradient(rgba(255,255,255,0.06), rgba(255,255,255,0.03)), rgba(0, 186, 255, 0.12);
-  color: #00baff;
-  padding: 0.45rem 0.95rem;
-  border-radius: 6px;
-  border: 1px solid rgba(0, 186, 255, 0.35);
-  font-size: 0.95rem;
-  font-weight: 600;
-  text-shadow: 0 0 6px rgba(0, 186, 255, 0.08);
-  transition: transform 0.15s ease, background 0.15s ease, color 0.15s ease;
-  display: inline-block;
-}
-
-.game-footer .control-info span:hover {
-  background: rgba(0, 186, 255, 0.22);
-  color: #e6f7ff;
-  transform: translateY(-2px);
-  box-shadow: 0 6px 18px rgba(0, 186, 255, 0.12);
+.control-info span {
+  color: #1a1a1a;
+  font-size: 0.9rem;
+  padding: 0.3rem 0.8rem;
+  background: rgba(0, 186, 255, 0.1);
+  border-radius: 4px;
+  border: 1px solid rgba(0, 186, 255, 0.2);
 }
 
 .download-btn {
@@ -1432,7 +1368,22 @@ header p {
   animation: pulse 4s infinite ease-in-out;
 }
 
-/* duplicate .game-info block removed; consolidated earlier in file */
+.game-info {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.game-info h3 {
+  color: #00baff;
+  font-size: 1.4rem;
+  margin-bottom: 1rem;
+  text-shadow: 0 0 8px rgba(0, 186, 255, 0.5);
+}
+
+.game-info p {
+  color: #1a1a1a;
+  line-height: 1.6;
+}
 
 .game-container {
   position: relative;
@@ -1468,6 +1419,20 @@ header p {
   z-index: 1;
 }
 
+.loading-spinner {
+  width: 50px;
+  height: 50px;
+  border: 3px solid rgba(0, 186, 255, 0.3);
+  border-top: 3px solid #00baff;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 1rem;
+}
+
+.loading-overlay p {
+  color: #00baff;
+  text-shadow: 0 0 4px rgba(0, 186, 255, 0.5);
+}
 
 
 
@@ -1488,9 +1453,9 @@ header p {
 }
 
 @keyframes borderPulse {
-  0% { box-shadow: 0 2px 12px #232323, 0 0 0 4px rgba(0, 186, 255, 0.6) inset; }
-  50% { box-shadow: 0 2px 16px rgba(0, 186, 255, 0.4), 0 0 0 4px rgba(0, 186, 255, 0.8) inset; }
-  100% { box-shadow: 0 2px 12px #232323, 0 0 0 4px rgba(0, 186, 255, 0.6) inset; }
+  0% { box-shadow: 0 2px 12px #232323, 0 0 0 4px #00baff inset; }
+  50% { box-shadow: 0 2px 20px #00baff, 0 0 0 4px #00baff inset; }
+  100% { box-shadow: 0 2px 12px #232323, 0 0 0 4px #00baff inset; }
 }
 
 .experience-card {
@@ -1514,16 +1479,25 @@ header p {
 }
 
 .experience-card::before {
-  /* disabled subtle stripe overlay to avoid a static visible line under cards */
-  display: none;
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(
+    transparent 50%,
+    rgba(0, 186, 255, 0.03) 50%
+  );
+  background-size: 100% 4px;
+  pointer-events: none;
+  animation: scanlineGlow 4s linear infinite;
 }
 
 .experience-entry {
   margin-bottom: 2rem;
   padding: 1rem;
-  /* remove divider entirely per request */
-  border-bottom: none;
-  box-shadow: none;
+  border-bottom: 1px solid rgba(0, 186, 255, 0.2);
   transition: all 0.3s ease;
   position: relative;
   z-index: 1;
@@ -1556,21 +1530,3 @@ header p {
   border-left: 2px solid rgba(0, 186, 255, 0.3);
   margin-left: 0.5rem;
 }
-
-/* NOTE: contact page scanline elements are intentionally visible again.
-  The scanline elements inside `src/components/Contact.js` are inline
-  elements and will use the site's `scanline` animations defined above.
-  If you want to selectively hide them later, toggle here or add a
-  `.no-scanlines` helper class on the contact section. */
-
-.about-card {
-  /* restore visible outer border, remove blue inset */
-  border: 2px solid #505050 !important;
-  box-shadow: 0 2px 12px rgba(35,35,35,0.45) !important;
-}
-
-.about-card:hover {
-  /* avoid adding the blue inset on hover */
-  box-shadow: 0 4px 20px rgba(0,0,0,0.5) !important;
-}
-
