@@ -1,0 +1,21 @@
+Hackathon Technical Summary
+===========================
+
+Project: Quantum Shift
+Description: A time-layered puzzle platformer built in 48 hours.
+Tech: Unity 2022 LTS, C#, DOTween, URP, ShaderGraph
+Team Size: 4
+Role: Gameplay + Systems Programmer
+Key Features:
+ - Reversible time-core mechanic with state checkpoints
+ - ScriptableObject driven level event system
+ - Lightweight object pooling for collectibles and FX
+ - Custom post-process vignette + chromatic pulse
+
+Performance Notes:
+ - Target 60 FPS mobile profile; maintained 58-62 FPS on test device
+ - Memory peak 210MB (within jam constraints)
+
+Future Improvements:
+ - Add level editor tools
+ - Expand mechanic variations (phase shift, gravity invert)

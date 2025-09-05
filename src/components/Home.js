@@ -1,11 +1,25 @@
 import React from 'react';
+import HackathonCard from './HackathonCard';
+import CertificatesCard from './CertificatesCard';
+import './Home.css';
+import './Components.css';
 
 const Home = () => {
   return (
     <div className="home-container">
+      {/* Subtle PS2-style pillar ambient layer */}
+      <div className="ps2-pillar-field" aria-hidden="true">
+        <span className="pillar p1" />
+        <span className="pillar p2" />
+        <span className="pillar p3" />
+        <span className="pillar p4" />
+        <span className="pillar p5" />
+        <span className="pillar p6" />
+      </div>
       <div className="scanline-layer">
         <div className="scanline blue slow"></div>
         <div className="scanline cyan fast"></div>
+        <div className="scanline cyan medium"></div>
       </div>
       <header>
         <h1 data-text="Andy Mackay">Andy Mackay</h1>
@@ -29,67 +43,14 @@ const Home = () => {
         </div>
       </section>
 
-      {/* Featured Game Section */}
-      <section className="featured-game">
-        <h2>Featured Game</h2>
-        <div className="game-card">
-          <div className="game-info">
-            <h3>Game Title</h3>
-            <p>A brief description of your featured game. Explain the core mechanics and what makes it unique.</p>
-          </div>
-          <div className="game-preview">
-            <div className="preview-container">
-              <div className="thumbnail-view">
-                <img 
-                  src="/images/game-thumbnail.jpg" 
-                  alt="Game Preview" 
-                  className="game-thumbnail"
-                />
-                <button className="play-preview-btn" onClick={() => document.querySelector('.preview-container').classList.add('show-game')}>
-                  <span className="play-icon">▶</span>
-                  Play Game
-                </button>
-              </div>
-              <div className="game-view">
-                <div className="loading-overlay">
-                  <div className="loading-spinner"></div>
-                  <p>Loading Game...</p>
-                </div>
-                <iframe 
-                  src="/webgl-builds/game/index.html" 
-                  title="Featured Unity WebGL Game"
-                  allow="autoplay; fullscreen"
-                  className="game-frame"
-                ></iframe>
-                <button className="close-btn" onClick={() => document.querySelector('.preview-container').classList.remove('show-game')}>✕</button>
-              </div>
-            </div>
-          </div>
-          <div className="game-footer">
-            <div className="game-controls">
-              <div className="control-info">
-                <p>Controls:</p>
-                <span>WASD - Move</span>
-                <span>Space - Jump</span>
-                <span>Mouse - Look</span>
-              </div>
-            </div>
-            <a href="/downloads/game.zip" className="download-btn" download>
-              <span className="download-icon">↓</span>
-              Download Game
-            </a>
-          </div>
-        </div>
-      </section>
-
-      {/* Showcase Section */}
+  {/* Showcase Section (moved above Featured Game) */}
       <section className="showcase">
         <h2>Vertical Slices</h2>
         <div className="slices-grid">
           <div className="slice">
             <div className="video-preview">
               <div className="video-thumbnail">
-                <img src="/images/project1-thumb.jpg" alt="Project One Thumbnail" />
+                <img src={`${process.env.PUBLIC_URL}/images/project1-thumb.jpg`} alt="Project One Thumbnail" />
                 <button 
                   className="play-overlay" 
                   onClick={() => document.getElementById('video-modal-1').classList.add('show')}
@@ -104,7 +65,7 @@ const Home = () => {
                     <p>Loading Video...</p>
                   </div>
                   <video controls>
-                    <source src="/videos/project1.mp4" type="video/mp4" />
+                    <source src={`${process.env.PUBLIC_URL}/videos/project1.mp4`} type="video/mp4" />
                   </video>
                   <button 
                     className="close-btn"
@@ -132,7 +93,7 @@ const Home = () => {
           <div className="slice">
             <div className="video-preview">
               <div className="video-thumbnail">
-                <img src="/images/project2-thumb.jpg" alt="Project Two Thumbnail" />
+                <img src={`${process.env.PUBLIC_URL}/images/project2-thumb.jpg`} alt="Project Two Thumbnail" />
                 <button 
                   className="play-overlay" 
                   onClick={() => document.getElementById('video-modal-2').classList.add('show')}
@@ -147,7 +108,7 @@ const Home = () => {
                     <p>Loading Video...</p>
                   </div>
                   <video controls>
-                    <source src="/videos/project2.mp4" type="video/mp4" />
+                    <source src={`${process.env.PUBLIC_URL}/videos/project2.mp4`} type="video/mp4" />
                   </video>
                   <button 
                     className="close-btn"
@@ -175,7 +136,7 @@ const Home = () => {
           <div className="slice">
             <div className="video-preview">
               <div className="video-thumbnail">
-                <img src="/images/project3-thumb.jpg" alt="Project Three Thumbnail" />
+                <img src={`${process.env.PUBLIC_URL}/images/project3-thumb.jpg`} alt="Project Three Thumbnail" />
                 <button 
                   className="play-overlay" 
                   onClick={() => document.getElementById('video-modal-3').classList.add('show')}
@@ -190,7 +151,7 @@ const Home = () => {
                     <p>Loading Video...</p>
                   </div>
                   <video controls>
-                    <source src="/videos/project3.mp4" type="video/mp4" />
+                    <source src={`${process.env.PUBLIC_URL}/videos/project3.mp4`} type="video/mp4" />
                   </video>
                   <button 
                     className="close-btn"
@@ -217,6 +178,67 @@ const Home = () => {
         </div>
       </section>
 
+      {/* Featured Game Section (moved below Vertical Slices) */}
+  <section className="featured-game">
+        <h2>Featured Game</h2>
+        <div className="game-card">
+          <div className="corner-glow cg1" />
+            <div className="corner-glow cg2" />
+            <div className="game-info">
+              <h3>Game Title</h3>
+              <p>A brief description of your featured game. Explain the core mechanics and what makes it unique.</p>
+            </div>
+            <div className="game-preview">
+              <div className="preview-container">
+                <div className="thumbnail-view">
+                  <img
+                    src={`${process.env.PUBLIC_URL}/images/game-thumbnail.jpg`}
+                    alt="Game Preview"
+                    className="game-thumbnail"
+                  />
+                  <button className="play-preview-btn" onClick={() => {
+                    const container = document.querySelector('.preview-container');
+                    if (container) container.classList.add('show-game');
+                  }}>
+                    <span className="play-icon">▶</span>
+                    Play Game
+                  </button>
+                </div>
+                <div className="game-view">
+                  <div className="loading-overlay">
+                    <div className="loading-spinner"></div>
+                    <p>Loading Game...</p>
+                  </div>
+                  <iframe
+                    src={`${process.env.PUBLIC_URL}/webgl-builds/game/index.html`}
+                    title="Featured Unity WebGL Game"
+                    allow="autoplay; fullscreen"
+                    className="game-frame"
+                  ></iframe>
+                  <button className="close-btn" onClick={() => {
+                    const container = document.querySelector('.preview-container');
+                    if (container) container.classList.remove('show-game');
+                  }}>✕</button>
+                </div>
+              </div>
+            </div>
+            <div className="game-footer">
+              <div className="game-controls">
+                <div className="control-info">
+                  <p>Controls:</p>
+                  <span>WASD - Move</span>
+                  <span>Space - Jump</span>
+                  <span>Mouse - Look</span>
+                </div>
+              </div>
+              <a href={`${process.env.PUBLIC_URL}/downloads/game.zip`} className="download-btn" download>
+                <span className="download-icon">↓</span>
+                Download Game
+              </a>
+            </div>
+        </div>
+      </section>
+
       {/* Work Experience Section */}
       <section className="work-experience">
         <h2>Work Experience</h2>
@@ -236,23 +258,14 @@ const Home = () => {
         </div>
       </section>
 
-      {/* Hackathon Experience Section */}
-      <section className="work-experience">
-        <h2>Hackathon Experience</h2>
-        <div className="experience-card">
-          <div className="experience-entry">
-            <h3>Game Jam Winner – Hackathon 2024</h3>
-            <p>Led a team of 4 to create a innovative puzzle game using Unity and C#, winning first place in the game development category.</p>
-          </div>
-          <div className="experience-entry">
-            <h3>AR Innovation Award – Tech Fest 2024</h3>
-            <p>Developed an augmented reality educational game using Unity AR Foundation and Azure Cloud Services.</p>
-          </div>
-          <div className="experience-entry">
-            <h3>Best Mobile Game – Global Game Jam 2024</h3>
-            <p>Created a mobile-optimized endless runner with procedural level generation and custom shader effects.</p>
-          </div>
-        </div>
+      {/* Hackathon / Game Jam Card */}
+      <section className="hackathon-section" style={{padding: '0 20px', margin: '0 0 3.5rem'}}>
+        <HackathonCard />
+      </section>
+
+      {/* Certificates Section */}
+      <section className="certificates-section" style={{padding: '0 20px', margin: '0 0 4rem'}}>
+        <CertificatesCard />
       </section>
       </div>
     </div>

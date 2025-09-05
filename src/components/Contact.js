@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import './Components.css';
+import './Contact.css';
 
 const Contact = () => {
   const [formData, setFormData] = useState({ name: "", email: "", message: "" });
@@ -34,19 +36,20 @@ const Contact = () => {
 
   return (
     <div className="contact-section">
-      <div className="grain"></div>
-      <div className="scanline" style={{animation: 'scanline 6s linear infinite'}}></div>
-      <div className="scanline" style={{animation: 'scanline 8s linear infinite', opacity: 0.4}}></div>
-      <div className="scanline-overlay"></div>
+      <div className="contact-scanline-layer">
+  <div className="contact-scanline fuzz" style={{ top: '15%' }} />
+  <div className="contact-scanline blue" style={{ top: '40%' }} />
+  <div className="contact-scanline fuzz" style={{ top: '70%' }} />
+      </div>
       <div className="contact-card">
         <h2>Contact Me</h2>
         {submitStatus === 'success' && (
-          <div className="status-message success">
+          <div className="form-message success">
             Message sent successfully!
           </div>
         )}
         {submitStatus === 'error' && (
-          <div className="status-message error">
+          <div className="form-message error">
             Failed to send message. Please try again.
           </div>
         )}
@@ -80,7 +83,7 @@ const Contact = () => {
               onChange={(e) => setFormData({...formData, message: e.target.value})}
               required
               className="cyber-textarea"
-              rows="5"
+              rows="3"
             />
             <div className="input-glow"></div>
           </div>
