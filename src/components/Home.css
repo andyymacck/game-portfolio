@@ -9,7 +9,7 @@
   position: relative;
   background: #b0b0b0;
   overflow: hidden;
-  padding-top: 14rem; /* significant additional push */
+  padding-top: 9.5rem; /* pull content higher */
 }
 
 .home-container::before {
@@ -65,20 +65,20 @@
 
 header {
   text-align: center;
-  padding: 2.75rem 1rem 2.25rem; /* more top padding pushes titles lower */
+  padding: 2rem 1rem 1.6rem; /* further reduction to raise header */
   margin-left: 0;
   margin-top: 0; /* remove negative pull-up */
-  margin-top: 1.5rem; /* explicit extra drop below global padding */
+  margin-top: 0; /* no extra drop below global padding */
   text-shadow: 0 0 8px #00baff, 0 0 2px #fff;
   animation: startup 1.5s ease-out;
   position: relative;
   background: transparent;
-  margin-bottom: 3.75rem; /* extra separation before About card */
+  margin-bottom: 5.5rem; /* slight extra separation before About card */
   width: 100%;
 }
 
 header h1 {
-  font-size: 4rem;
+  font-size: 3.2rem; /* smaller */
   margin-bottom: 0.1rem;
   letter-spacing: 3px;
   font-weight: 600;
@@ -117,7 +117,7 @@ header p {
 /* ===== SHOWCASE SECTION ===== */
 
 .showcase {
-  margin: 4rem 0 2.5rem; /* bottom spacing standard for next section */
+  margin: 4rem 0 2rem; /* unify spacing */
   padding: 0 20px;
   position: relative;
 }
@@ -126,7 +126,7 @@ header p {
 
 .featured-game {
   padding: 0 20px;
-  margin: 0 0 2.5rem; /* relies on previous section's bottom margin for separation */
+  margin: 0 0 2rem; /* unify spacing */
   animation: startup 1.5s ease-out;
 }
 
@@ -146,7 +146,9 @@ header p {
 .additional-awards h2,
 .hackathon-experience h2,
 .awards h2,
-.experience h2 {
+.experience h2,
+.hackathon-section h2,
+.certificates-section h2 {
   text-align: center;
   margin: 0 0 1.5rem 0;
   font-size: 1.5rem;
@@ -206,7 +208,7 @@ header p {
 /* ===== WORK EXPERIENCE SECTION ===== */
 
 .work-experience {
-  margin: 4rem 0 2rem;
+  margin: 4rem 0 2rem; /* unchanged; acts as standard section spacing */
   padding: 0 20px;
   animation: startup 1.5s ease-out;
 }
@@ -240,6 +242,15 @@ header p {
 
 .additional-awards {
   margin: 4rem 0 2rem;
+}
+
+/* ===== HACKATHON & CERTIFICATES SECTIONS ===== */
+
+.hackathon-section,
+.certificates-section {
+  padding: 0 20px;
+  margin: 4rem 0 2rem;
+  animation: startup 1.5s ease-out;
 }
 
 /* Additional awards heading inherits unified 1.5rem style */
@@ -288,8 +299,9 @@ header p {
     padding: 0 1rem;
   }
   
-  header { padding: 2.2rem 1rem 2rem; margin-bottom: 3.2rem; margin-top: 1.2rem; }
-  .home-container { padding-top: 11rem; }
+  header { padding: 1.6rem 1rem 1.4rem; margin-bottom: 4.6rem; margin-top: 0.3rem; }
+  .home-container { padding-top: 8rem; }
+  header h1 { font-size: 2.8rem; }
   .showcase h2 { font-size: 2rem; }
   
   .featured-game h3 {
@@ -330,38 +342,7 @@ header p {
 }
 
 /* ===== PS2 INSPIRED AMBIENT LAYER ===== */
-
-/* Boot swirl overlay (sits above ::before gradient dots but below scanlines) */
-.home-container::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background:
-    radial-gradient(circle at 55% 45%, rgba(0,186,255,0.08) 0%, rgba(0,0,0,0.0) 55%),
-    radial-gradient(circle at 30% 65%, rgba(0,120,170,0.07) 0%, rgba(0,0,0,0) 60%),
-    conic-gradient(from 35deg at 50% 50%, rgba(0,186,255,0.07), transparent 40%, rgba(0,186,255,0.04));
-  mix-blend-mode: screen;
-  pointer-events: none;
-  z-index: 1;
-  animation: bootSwirl 38s linear infinite, hueShift 26s ease-in-out infinite;
-}
-
-
-@keyframes bootSwirl {
-  0% { transform: rotate(0deg) scale(1); opacity:1; }
-  50% { transform: rotate(180deg) scale(1.05); opacity:0.95; }
-  100% { transform: rotate(360deg) scale(1); opacity:1; }
-}
-
-@keyframes hueShift {
-  0%,100% { filter: hue-rotate(0deg); }
-  50% { filter: hue-rotate(25deg); }
-}
-
-/* Respect reduced motion preferences */
-@media (prefers-reduced-motion: reduce) {
-  .home-container::after { animation: none !important; }
-}
+/* Boot swirl removed from global background; relocated into Hackathon card */
 
 /* ===== SUBTLE PS2 PILLAR FIELD ===== */
 .ps2-pillar-field { position: fixed; inset:0; pointer-events:none; z-index:1; overflow:hidden; }

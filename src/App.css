@@ -65,6 +65,75 @@ html, body {
   width: 100%;
   overflow-x: hidden;
   background: #000 !important;
+  /* Stable retro arrow on root element to avoid transform-induced flicker */
+  cursor: none; /* hide native cursor; DOM-based cursor will render */
+}
+
+/* Set retro cursor on the main container only */
+.portfolio-container {
+  cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16'%3E%3Cpath d='M1 1 L1 12 L4 9 L7 15 L9 14 L6 8 L11 8 Z' fill='%23ffffff' stroke='%23000000' stroke-width='1'/%3E%3C/svg%3E") 1 1, auto;
+}
+
+/* Ensure ALL overlays have pointer-events: none to prevent cursor flicker */
+.portfolio-container::before,
+.portfolio-container::after,
+.home-container::before,
+.home-container::after,
+.scanline-layer,
+.scanline,
+.tv-static::before,
+.tv-static::after,
+.contact-section::before,
+.contact-section::after,
+.contact-scanline-layer,
+.contact-scanline,
+.ps2-pillar-field {
+  pointer-events: none !important;
+}
+
+/* ===== RETRO HAND CURSOR FOR INTERACTIVES ===== */
+a, button, [role="button"],
+.hamburger-menu,
+.nav-menu a,
+.hackathon-toggle,
+.cert-toggle,
+.play-preview-btn,
+.play-overlay,
+.submit-btn,
+.cert-grid-toggle,
+.cert-filter-btn,
+.cert-attachment-link,
+.hackathon-download,
+.download-btn {
+  cursor: none; /* custom cursor switches to hand variant */
+}
+
+/* Keep I-beam for text inputs */
+input, textarea { cursor: text; }
+
+/* When native text fields are hovered, show native I-beam and hide custom */
+body.native-text-cursor { cursor: text !important; }
+
+/* ===== DOM-BASED CUSTOM CURSOR ===== */
+.custom-cursor-enabled *:not(input):not(textarea):not([contenteditable="true"]) { cursor: none !important; }
+.retro-cursor {
+  position: fixed;
+  left: 0; top: 0;
+  width: 20px; height: 20px; /* slightly larger */
+  pointer-events: none;
+  z-index: 3000;
+  transform: translate(-100px, -100px); /* offscreen until first move */
+  image-rendering: pixelated;
+  background-repeat: no-repeat;
+  background-position: 0 0;
+  background-size: 20px 20px;
+}
+.retro-cursor.hidden { opacity: 0; }
+.retro-cursor.arrow { 
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16'%3E%3Cpath d='M1 1 L1 12 L4 9 L7 15 L9 14 L6 8 L11 8 Z' fill='%23ffffff' stroke='%23000000' stroke-width='1'/%3E%3C/svg%3E");
+}
+.retro-cursor.hand {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16'%3E%3Cpath d='M3 14 L3 7 L4.5 7 L4.5 10 L5.5 10 L5.5 6 L7 6 L7 10.5 L8 10.5 L8 5 L9.5 5 L9.5 11.5 L11 11.5 L11 8.5 L12.5 8.5 L12.5 13.5 Q12.5 15 11 15 L6.5 15 Q4 15 3 14 Z' fill='%23ffffff' stroke='%23000000' stroke-width='1'/%3E%3C/svg%3E");
 }
 
 .portfolio-container {
@@ -75,7 +144,8 @@ html, body {
   padding: 0;
   margin: 0;
   position: relative;
-  animation: ps2Startup 1.5s ease-out, verticalWave 8s ease-in-out infinite;
+  /* Remove continuous transform to prevent cursor flicker on some browsers */
+  animation: ps2Startup 1.5s ease-out;
   z-index: 0;
 }
 
@@ -119,6 +189,37 @@ html, body {
   position: relative;
 }
 
+/* ===== PSX DITHER MODE (optional) ===== */
+.psx-dither .portfolio-container {
+  filter: contrast(1.05) saturate(0.9);
+}
+.psx-dither-texture .portfolio-container::before,
+.psx-dither-texture .portfolio-container::after,
+.psx-dither-texture .home-container::before {
+  /* ordered dither-like pattern overlay */
+  background-image:
+    linear-gradient(0deg, rgba(0,0,0,0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,0,0,0.03) 1px, transparent 1px);
+  background-size: 4px 4px, 4px 4px;
+  mix-blend-mode: multiply;
+}
+
+/* ===== MICRO AFFINE WOBBLE (hover only, very subtle) ===== */
+.game-card:hover, .experience-card:hover, .about-card:hover, .awards-card:hover {
+  transform: translateY(-5px) rotate(0.02deg) skewX(0.03deg);
+}
+
+/* ===== PIXELATED ZOOM FOR THUMBNAILS ===== */
+.video-thumbnail img,
+.game-thumbnail {
+  image-rendering: pixelated;
+  transition: transform .2s ease;
+}
+.video-thumbnail:hover img,
+.preview-container:hover .game-thumbnail {
+  transform: scale(1.02);
+}
+
 /* ===== NAVIGATION STYLES ===== */
 
 /* Navigation overlay (dim background when panel open) */
@@ -141,8 +242,8 @@ html, body {
 /* Hamburger button */
 .hamburger-menu {
   position: fixed;
-  top: 14px;
-  left: 16px; /* Reverted to left side */
+  top: calc(14px + env(safe-area-inset-top));
+  left: calc(16px + env(safe-area-inset-left)); /* Reverted to left side with safe-area */
   width: 44px;
   height: 44px;
   padding: 9px 8px;
@@ -180,8 +281,8 @@ html, body {
 /* Compact floating navigation panel */
 .nav-menu {
   position: fixed;
-  top: 68px;
-  left: 16px; /* position beneath left hamburger */
+  top: calc(68px + env(safe-area-inset-top));
+  left: calc(16px + env(safe-area-inset-left)); /* position beneath left hamburger */
   width: 220px;
   background: linear-gradient(165deg, rgba(0,0,0,0.92), rgba(5,5,5,0.85));
   border: 1px solid rgba(0,186,255,0.35);
@@ -287,14 +388,14 @@ html, body {
 
 @media (max-width: 768px) {
   .nav-menu {
-    left: 12px;
-    top: 62px;
+    left: calc(12px + env(safe-area-inset-left));
+    top: calc(62px + env(safe-area-inset-top));
     width: 200px;
     padding: 16px 16px 14px;
   }
   .nav-menu a { font-size: 0.95rem; padding: 9px 12px 9px 11px; }
   /* Keep hamburger on left for mobile too */
-  .hamburger-menu { left: 12px; right: auto; }
+  .hamburger-menu { left: calc(12px + env(safe-area-inset-left)); right: auto; }
 }
 
 /* Legacy visual effect animations restored */
@@ -327,10 +428,7 @@ html, body {
   100% { opacity: 1; transform: scale(1); }
 }
 
-@keyframes verticalWave {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-2px); }
-}
+/* verticalWave removed to avoid continuous transforms on root container */
 
 @keyframes grainShift {
   0%, 100% { opacity: 0.15; transform: translate(0px, 0px); }

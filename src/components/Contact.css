@@ -108,11 +108,11 @@
 /* Gentle vertical drift for scanlines (returns minimal motion) */
 /* Continuous downward travel for lines */
 @keyframes scanline-fall-fast {
-  0% { transform: translateY(-110vh); }
+  0% { transform: translateY(0); }
   100% { transform: translateY(110vh); }
 }
 @keyframes scanline-fall-slow {
-  0% { transform: translateY(-110vh); }
+  0% { transform: translateY(0); }
   100% { transform: translateY(110vh); }
 }
 
