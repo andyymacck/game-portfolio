@@ -1,0 +1,17 @@
+Hackathon Project: Toyz Cars UEFN Final
+
+By Andrew Mackay, Athabasca University
+
+Summary
+-------
+For this hackathon, I developed a racing experience in Unreal Editor for Fortnite (UEFN) while exploring both gameplay design principles and engine-specific workflows. Working with my teammate Wole, we imported Toyz assets, built a racetrack, and implemented the core racing mechanics to create a playable prototype within the event’s timeframe.
+
+Key Notes
+---------
+- Practiced UEFN version control (asset locking, in-editor syncing, live testing).
+- Worked around strict asset naming conventions that blocked progress temporarily.
+- Planned extensions: post-race teleporters for social areas, dynamic weather events, cinematic cutscenes, and a deep-link proposal for Fortnite islands.
+
+Takeaways
+---------
+This project reinforced prioritizing core mechanics before polish and highlighted UEFN’s strengths/constraints compared to other engines. It stands as a proof-of-concept racing game and a useful exercise in rapid prototyping and cross-engine design thinking.
