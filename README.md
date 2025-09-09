@@ -68,3 +68,46 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/d
 ### `npm run build` fails to minify
 
 This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+
+## Contact Form Configuration
+
+The contact form uses Web3Forms. To enable it:
+
+1. Create an account / form at https://web3forms.com/ and copy your Access Key.
+2. Copy `.env.example` to a new file named `.env` in the project root.
+3. Replace `YOUR_REAL_WEB3FORMS_ACCESS_KEY` with the actual key:
+
+```
+REACT_APP_WEB3FORMS_KEY=xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+```
+
+4. Save the file, then restart the dev server (`npm start`) or rebuild (`npm run build`).
+5. Submit the form locally to confirm you see `Message sent successfully!`.
+
+If you see `Invalid access key` in the form error detail:
+- Make sure the key matches exactly (no spaces, no quotes).
+- Regenerate the key in Web3Forms if you think it was exposed, then update `.env` and rebuild.
+
+Security Notes:
+- `.env` is git‑ignored; do not commit your real key.
+- Anyone inspecting the deployed bundle can still see the key (client-side apps cannot fully hide it). If abuse occurs, rotate the key.
+
+Optional Hardening:
+- Add a honeypot field or enable spam protection features in Web3Forms dashboard.
+- Add rate limiting / captcha using a different backend if you later introduce a server.
+
+### Spam Protection / Key Rotation
+
+Implemented:
+- Honeypot field `botcheck` (hidden). Bots that fill it are treated as silent success and discarded.
+
+To rotate your Web3Forms key (e.g., if exposed):
+1. Generate a new key in Web3Forms dashboard.
+2. Update `.env` with the new value.
+3. Rebuild (`npm run build`) and redeploy.
+4. Invalidate the old key in the dashboard (if supported) to prevent abuse.
+
+If spam increases:
+- Add simple client-side rate limiting (e.g., block multiple submits inside 30s).
+- Add a challenge (math question) stored in component state.
+- Move to server-side proxy to hide key.

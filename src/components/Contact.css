@@ -27,7 +27,7 @@
   background-size: 110px 110px; /* tighter pattern so noise is a bit more visible */
   opacity: 0.11; /* increased strength */
   mix-blend-mode: screen;
-  animation: fuzzShift 1.2s steps(4) infinite; /* slower + fewer jumps to reduce shake */
+  animation: none; /* disabled until .ready to avoid refresh flicker */
 }
 
 /* (Removed earlier secondary noise ::after to avoid cyan tint override) */
@@ -73,7 +73,7 @@
   height: 1px;
   opacity: 0.30;
   mix-blend-mode: screen;
-  animation: scanline-fall-fast 22s linear infinite;
+  animation: none;
 }
 
 /* Grey fuzzy larger line */
@@ -83,7 +83,7 @@
   height: 4px;
   opacity: 0.06;
   filter: blur(1.6px);
-  animation: scanline-fall-slow 55s linear infinite;
+  animation: none;
 }
 
 /* Subtle monochrome repeating fine lines (grayscale) lighten slightly for visibility baseline */
@@ -350,3 +350,8 @@
   .contact-card h2 { font-size: 0.9rem; }
   .submit-btn { padding: 9px 18px; font-size: 0.85rem; }
 }
+
+/* Enable animations only after component sets .ready to reduce initial flicker */
+.contact-section.ready::before { animation: fuzzShift 1.2s steps(4) infinite; }
+.contact-section.ready .contact-scanline.blue { animation: scanline-fall-fast 22s linear infinite; }
+.contact-section.ready .contact-scanline.fuzz { animation: scanline-fall-slow 55s linear infinite; }
