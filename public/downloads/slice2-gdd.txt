@@ -1,0 +1,98 @@
+Vertical Slice 2 – Game Design Document (Condensed)
+=================================================
+
+Title (Working): Shard Runner
+Genre: 2.5D Action Adventure / Collect–Explore Hybrid
+Engine: Unity (C#)
+Target Platform: WebGL (Desktop Focus)
+Estimated Final Scope: 12–15 min polished slice
+
+1. High Concept
+----------------
+Traverse a fragmented valley suspended over the void while managing momentum and timing. The player harvests kinetic shards to unlock traversal events and power gated encounters. Slice 2 focuses on traversal clarity + systemic collectible approval pipeline + spline-based guided motion segments.
+
+2. Core Pillars
+----------------
+1. Flow Traversal – Movement should feel continuous: jump → glide curve → rail spline → landing buffer.
+2. Intent Confirmation – Pickups & triggers route through approval callbacks (prevents race conditions, supports multiplayer scaling).
+3. Modular Progression – Unlocks (gates, rails, lifts) react to shard counts, not scripted sequence.
+4. Readable Risk – Each movement challenge surfaces cost (fall vector, recovery ladder, checkpoint light).
+
+3. Player Mechanics (Implemented / Planned)
+------------------------------------------
+Implemented:
+- Directional movement (Catmull-Rom guided segments optional)
+- Jump + coyote time + buffered early jump
+- Shard Collect (approval queue)
+- Teleport Node (fade out → reposition → fade in coroutine)
+Planned (Stretch):
+- Short glide (decay curve control)
+- Chain dash nodes
+
+4. Collectible System
+----------------------
+Object enters pending state → calls Approve() when safe → publishes event to progression manager.
+Benefits: Avoids double-consume during physics settle; easy to extend for network authority.
+
+5. Progression & Gates
+-----------------------
+Shard thresholds: 5 (Unlock Rail 1), 10 (Power Lift), 15 (Open Gate). Each gate listens for shard total event broadcast.
+
+6. Enemies (Prototype Only)
+----------------------------
+Light sentry orb: radial patrol + slow projectile. Not combat-heavy in this slice (focus on traversal).
+
+7. Level Layout Beats
+----------------------
+A. Spawn Plateau – Learn jump + shard pickup (3 shards)
+B. First Gap – Teaches approval delay (UI blip when confirmed)
+C. Rail Segment – Auto-run along spline; player times jump to early exit for bonus shard cluster
+D. Lift Gate – Requires 10 shards; optional side path offers momentum challenge
+E. Teleport Spire – Fade coroutine demonstration; shard cluster reward
+F. Final Gate – Opens at 15, ends slice with vista platform
+
+8. UI / Feedback
+-----------------
+- Shard Bar: dynamic instantiation with positional offsets per icon
+- Approval Pulse: on approval event, icon briefly scales & flashes
+- Gate HUD Hint: gate shows remaining shard delta (e.g. 3 more)
+
+9. Technical Architecture
+--------------------------
+Managers:
+- EventHub: lightweight publish/subscribe (ScriptableEvent style)
+- ProgressionManager: listens to shard total; updates gates
+Core Classes:
+- CollectibleItem, CollectibleApprover
+- SplineMover (CatmullRom evaluator)
+- TeleportController (Coroutine + events for fade)
+Representative Snippet (Collectible Approval):
+public void Approve() {
+    if (!m_isApproved) {
+        m_callback(m_collectableItem);
+        m_isApproved = true;
+    }
+}
+
+10. Risks & Mitigations
+------------------------
+Risk: WebGL performance dips with overdraw noise.
+Mitigation: Reduce overlapping transparency; pool shard VFX.
+Risk: Mis-timed approval vs. UI expectations.
+Mitigation: Add pending shimmer then confirmation pulse.
+
+11. Milestone Plan
+-------------------
+Day 1–2: Layout blockout + spline rails.
+Day 3–4: Collectible approval + shard bar UI.
+Day 5: Gates & progression events.
+Day 6: Teleport + polish passes (coyote time, buffered input).
+Day 7: Visual pass + performance trim + deploy.
+
+12. Stretch Goals (Post-Slice)
+------------------------------
+- Glide mechanic with stamina arc
+- Enemy escalation (shielded node + chase drone)
+- Shard combo multiplier (speed boost)
+
+End of Document

@@ -681,24 +681,39 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  background: rgba(0, 186, 255, 0.2);
-  border: 2px solid #00baff;
-  color: #00baff;
-  padding: 1rem 2rem;
-  border-radius: 4px;
+  z-index: 10;
+  border-radius: 6px;
   font-size: 1.2rem;
   cursor: pointer;
   transition: all 0.3s ease;
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  z-index: 10;
+  background: rgba(0, 186, 255, 0.18);
+  color: #fff;
+  border: 1px solid rgba(0,186,255,0.32);
+  box-shadow: 0 2px 12px rgba(0,186,255,0.10);
+  padding: 0.7em 1.1em;
+  font-weight: 500;
+  letter-spacing: 0.02em;
 }
 
+.thumbnail-view img.game-thumbnail {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 4px;
+  z-index: 2;
+}
+
+
 .play-preview-btn:hover {
-  background: rgba(0, 186, 255, 0.4);
+  background: rgba(0, 186, 255, 0.32);
   transform: translate(-50%, -50%) scale(1.05);
-  box-shadow: 0 0 20px rgba(0, 186, 255, 0.5);
+  box-shadow: 0 0 20px rgba(0, 186, 255, 0.18);
 }
 
 /* ===== MODAL COMPONENTS ===== */
@@ -777,12 +792,15 @@
 .preview-container {
   position: relative;
   width: 100%;
-  height: 0;
-  padding-bottom: 56.25%; /* 16:9 aspect ratio */
-  background: rgba(0, 0, 0, 0.8);
+  aspect-ratio: 16/9;
+  min-height: 240px;
+  background: #111;
   border: 1px solid rgba(0, 186, 255, 0.3);
-  border-radius: 4px;
+  border-radius: 12px;
   overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .thumbnail-view {
@@ -793,13 +811,10 @@
   height: 100%;
   opacity: 1;
   transition: opacity 0.5s ease;
-}
-
-.game-thumbnail {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  border-radius: 4px;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .game-view {
@@ -1029,6 +1044,15 @@ body.modal-open .portfolio-container { filter: none !important; }
   font-weight: 400;
 }
 
+.game-thumbnail {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 12px;
+  z-index: 2;
+}
+
 .slices-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -1158,46 +1182,146 @@ body.modal-open .portfolio-container { filter: none !important; }
   transition: transform 0.3s ease;
 }
 
-.play-overlay {
+/* ===== SUBTLE CRT EFFECT OVERLAY ===== */
+/* Applied to video thumbnails and game preview surfaces without heavy GPU cost */
+
+.video-thumbnail,
+.preview-container .thumbnail-view,
+.video-frame {
+  position: relative; /* ensure positioning context for overlays */
+  isolation: isolate; /* keep blend modes contained */
+}
+
+@keyframes crtFlickerSoft { 0%, 98%, 100% { opacity: 1; } 99% { opacity: 0.97; } }
+
+/* Main composite overlay */
+.video-thumbnail::after,
+.video-frame::after {
+  content: "";
   position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.4);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  opacity: 0;
-  transition: all 0.3s ease;
-  border: none;
-  cursor: pointer;
+  inset: 0;
+  pointer-events: none;
+  z-index: 2; /* above image/video, below buttons (play-overlay has its own stacking) */
+  background:
+    /* Subtle center glow + vignette */
+    radial-gradient(ellipse at center, rgba(255,255,255,0.10) 0%, rgba(0,0,0,0.60) 72%),
+    /* Fine horizontal scanlines */
+    repeating-linear-gradient(
+      to bottom,
+      rgba(255,255,255,0.045) 0px,
+      rgba(255,255,255,0.045) 1px,
+      rgba(0,0,0,0) 1px,
+      rgba(0,0,0,0) 3px
+    ),
+    /* Diagonal micrograin */
+    repeating-linear-gradient(45deg,
+      rgba(255,255,255,0.012) 0 1px,
+      rgba(0,0,0,0) 1px 3px
+    ),
+    /* Slight vertical banding */
+    repeating-linear-gradient(
+      to right,
+      rgba(255,255,255,0.015) 0 2px,
+      rgba(0,0,0,0) 2px 4px
+    ),
+    linear-gradient(rgba(255,255,255,0.025), rgba(0,0,0,0.30));
+  mix-blend-mode: screen;
+  opacity: 0.32; /* intensified overall effect */
+  animation: crtFlickerSoft 9s steps(1) infinite, crtNoiseShift 4.5s linear infinite; /* periodic flicker + drifting grain */
+  backdrop-filter: blur(0.35px) saturate(1.05);
+  background-blend-mode: screen, screen, overlay, overlay, normal;
 }
 
-.play-icon {
-  font-size: 3rem;
-  color: #00baff;
-  text-shadow: 0 0 20px rgba(0, 186, 255, 0.8);
-  transform: scale(1);
-  transition: transform 0.3s ease;
+.preview-container .thumbnail-view::after {
+  z-index: 1;
+  background:
+    radial-gradient(ellipse at center, rgba(255,255,255,0.04) 0%, rgba(0,0,0,0.18) 72%),
+    repeating-linear-gradient(
+      to bottom,
+      rgba(255,255,255,0.01) 0px,
+      rgba(255,255,255,0.01) 1px,
+      rgba(0,0,0,0) 1px,
+      rgba(0,0,0,0) 3px
+    ),
+    repeating-linear-gradient(45deg,
+      rgba(255,255,255,0.003) 0 1px,
+      rgba(0,0,0,0) 1px 3px
+    ),
+    repeating-linear-gradient(
+      to right,
+      rgba(255,255,255,0.003) 0 2px,
+      rgba(0,0,0,0) 2px 4px
+    ),
+    linear-gradient(rgba(255,255,255,0.004), rgba(0,0,0,0.04));
+  mix-blend-mode: screen;
+  opacity: 0.04; /* ultra soft effect for Featured Game */
+  animation: crtFlickerSoft 9s steps(1) infinite, crtNoiseShift 4.5s linear infinite;
+  backdrop-filter: blur(0.08px) saturate(1.01);
+  background-blend-mode: screen, screen, overlay, overlay, normal;
+  opacity: 0.10; /* even softer effect for Featured Game */
+  animation: crtFlickerSoft 9s steps(1) infinite, crtNoiseShift 4.5s linear infinite;
+  backdrop-filter: blur(0.25px) saturate(1.03);
+  background-blend-mode: screen, screen, overlay, overlay, normal;
 }
 
-.video-thumbnail:hover {
-  transform: scale(1.02);
-  box-shadow: 0 0 24px #00baff;
+/* Subtle inner vignette mask for barrel illusion */
+.video-thumbnail::before,
+.preview-container .thumbnail-view::before,
+.video-frame::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  background: radial-gradient(circle at center, rgba(0,0,0,0) 65%, rgba(0,0,0,0.14) 100%);
+  mix-blend-mode: multiply;
 }
 
-.video-thumbnail:hover .play-overlay { opacity: 1; background: rgba(0, 0, 0, 0.6); }
-.video-thumbnail:hover .play-icon { transform: scale(1.1); }
-.video-thumbnail:hover img { transform: scale(1.05); }
+/* Chromatic edge fringe (very subtle) */
+.video-thumbnail .crt-fringe,
+.preview-container .thumbnail-view .crt-fringe,
+.video-frame .crt-fringe { display:none; }
 
-.video-preview {
-  width: 100%;
-  height: auto;
+/* Optional stronger effect when hovering (kept minimal to avoid flicker) */
+.video-thumbnail:hover::after {
+  opacity: 0.38;
 }
 
-/* When the modal is open, neutralize hover animations near the video to prevent cursor-induced repaints */
-body.modal-open .video-thumbnail,
+@media (prefers-reduced-motion: reduce) {
+  .video-thumbnail::after,
+  .preview-container .thumbnail-view::after,
+  .video-frame::after { animation: none; }
+}
+
+@keyframes crtNoiseShift {
+  0% { background-position: 0 0, 0 0, 0 0, 0 0, 0 0; }
+  25% { background-position: 0 0, 0 2px, 6px 4px, -4px 0, 0 0; }
+  50% { background-position: 0 0, 0 1px, 12px 8px, -8px 0, 0 0; }
+  75% { background-position: 0 0, 0 3px, 18px 12px, -12px 0, 0 0; }
+  100% { background-position: 0 0, 0 0, 24px 16px, -16px 0, 0 0; }
+}
+
+/* Ensure underlying image/video is visible and layered below overlays */
+.thumbnail-view img.game-thumbnail,
+.video-thumbnail img,
+.video-frame video {
+  position: relative;
+  z-index: 2;
+}
+
+/* Keep play button and overlay controls above CRT layers */
+.play-preview-btn,
+.play-overlay,
+.close-btn { z-index: 5; }
+.preview-container .thumbnail-view::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  background: radial-gradient(circle at center, rgba(0,0,0,0) 65%, rgba(0,0,0,0.14) 100%);
+  mix-blend-mode: multiply;
+}
 body.modal-open .video-thumbnail * {
   transform: none !important;
   transition: none !important;

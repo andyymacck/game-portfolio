@@ -238,6 +238,11 @@ const Home = () => {
                       <li>Views react to changes without pulling state.</li>
                     </ul>
                     <p>This separation of roles means that introducing new gameplay features—whether it’s a boss encounter, a new collectible type, or an alternate UI—requires minimal impact on existing code, keeping the system both scalable and maintainable.</p>
+                    <p style={{marginTop:'1rem'}}>
+                      <a href={assets.slices.s2.gdd} download onMouseOver={()=>SFX.play('hover')} onClick={()=>SFX.play('click')} style={{fontSize:'0.75rem', textTransform:'uppercase', letterSpacing:'0.6px', background:'rgba(0,186,255,0.12)', border:'1px solid rgba(0,186,255,0.4)', padding:'0.4rem 0.75rem', borderRadius:'6px', textDecoration:'none', color:'#00baff', display:'inline-block'}}>
+                        Download Slice 2 GDD
+                      </a>
+                    </p>
                   </div>
                 </details>
               </div>

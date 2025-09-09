@@ -9,11 +9,12 @@ export default {
       video: pub('project1.mp4')
     },
     s2: {
-      thumb: pub('project2-thumb.jpg'),
-      video: pub('project2.mp4')
+  thumb: pub('unity/Bananaman.JPG'),
+  video: pub('project2.mp4'), // placeholder until real video
+  gdd: pub('downloads/slice2-gdd.txt')
     },
     s3: {
-      thumb: pub('project3-thumb.jpg'),
+  thumb: pub('unreal/UnrealProj.JPG'),
       video: pub('project3.mp4')
     }
   },
