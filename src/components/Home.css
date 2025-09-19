@@ -1,0 +1,420 @@
+/* ===== HOME PAGE STYLES ===== */
+
+/* Further increased top padding again to push all content (including title) further below hamburger */
+.home-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  width: 100%;
+  position: relative;
+  background: #b0b0b0;
+  overflow: hidden;
+  padding-top: 9.5rem; /* pull content higher */
+}
+
+.home-container::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: 
+    radial-gradient(circle at 20% 50%, rgba(0, 186, 255, 0.03) 0%, transparent 50%),
+    radial-gradient(circle at 80% 20%, rgba(0, 186, 255, 0.03) 0%, transparent 50%),
+    radial-gradient(circle at 40% 80%, rgba(0, 186, 255, 0.03) 0%, transparent 50%);
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* ===== SCANLINE EFFECTS ===== */
+
+/* Enhanced legacy scanlines */
+.home-container .scanline-layer {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 2;
+  overflow: hidden;
+}
+
+.home-container .scanline {
+  position: absolute;
+  left: -10%;
+  width: 120%;
+  height: 2px;
+  opacity: 0.7;
+  filter: blur(1px);
+  box-shadow: 0 0 18px currentColor;
+}
+
+.home-container .scanline.blue {
+  background: linear-gradient(90deg, rgba(0,186,255,0.08), rgba(0,186,255,0.2));
+  color: rgba(0,186,255,0.95);
+  animation: scanline-move 30s linear infinite;
+}
+
+.home-container .scanline.cyan {
+  background: linear-gradient(90deg, rgba(0,150,200,0.05), rgba(0,150,200,0.15));
+  color: rgba(0,150,200,0.9);
+  height: 1px;
+  animation: scanline-move 15s linear infinite;
+}
+
+/* ===== CONTENT LAYOUT ===== */
+
+header {
+  text-align: center;
+  padding: 2rem 1rem 1.6rem; /* further reduction to raise header */
+  margin-left: 0;
+  margin-top: 0; /* remove negative pull-up */
+  margin-top: 0; /* no extra drop below global padding */
+  text-shadow: 0 0 8px #00baff, 0 0 2px #fff;
+  animation: startup 1.5s ease-out;
+  position: relative;
+  background: transparent;
+  margin-bottom: 5.5rem; /* slight extra separation before About card */
+  width: 100%;
+}
+
+header h1 {
+  font-size: 3.2rem; /* smaller */
+  margin-bottom: 0.1rem;
+  letter-spacing: 3px;
+  font-weight: 600;
+  color: #000000;
+  text-transform: uppercase;
+  text-shadow: 0 0 12px #00baff, 0 0 8px #00baff;
+  position: relative;
+  animation: 
+    titlePop 3s ease-in-out infinite,
+    glow 3s infinite ease-in-out,
+    chromaShift 8s infinite;
+}
+
+header p {
+  font-size: 1.4rem;
+  color: #505050;
+  margin-bottom: 0;
+  margin-top: -5px;
+  text-shadow: 0 0 4px #00baff;
+  animation: textFlicker 3s infinite;
+  letter-spacing: 1px;
+}
+
+.content-wrapper {
+  position: relative;
+  z-index: 3;
+  width: 100%;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 2rem;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ===== SHOWCASE SECTION ===== */
+
+.showcase {
+  margin: 4rem 0 2rem; /* unify spacing */
+  padding: 0 20px;
+  position: relative;
+}
+
+/* ===== FEATURED GAME SECTION ===== */
+
+.featured-game {
+  padding: 0 20px;
+  margin: 0 0 2rem; /* unify spacing */
+  animation: startup 1.5s ease-out;
+}
+
+.featured-game h2 {
+  text-align: center;
+  margin: 0 0 1.5rem 0;
+  font-size: 1.5rem;
+  color: #000000; /* black fill for contrast */
+  text-shadow: 0 0 8px #00baff; /* single softer glow like original */
+  animation: textFlicker 4s infinite;
+  letter-spacing: 1px;
+}
+
+.about-me h2,
+.work-experience h2,
+.showcase h2,
+.additional-awards h2,
+.hackathon-experience h2,
+.awards h2,
+.experience h2,
+.hackathon-section h2,
+.certificates-section h2 {
+  text-align: center;
+  margin: 0 0 1.5rem 0;
+  font-size: 1.5rem;
+  color: #000000; /* restore black base */
+  text-shadow: 0 0 8px #00baff; /* unified subtle cyan glow */
+  animation: textFlicker 4s infinite;
+  letter-spacing: 1px;
+}
+
+/* ===== ABOUT SECTION ===== */
+
+.about-me {
+  padding: 0 20px;
+  margin: 0 0 2rem;
+  animation: startup 1.5s ease-out;
+}
+
+.about-card h3 {
+  color: #00baff;
+  text-shadow: 0 0 4px rgba(0, 186, 255, 0.8);
+  font-size: 1.2rem;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+  animation: textFlicker 3s infinite;
+}
+
+.about-card p {
+  color: #2c2c2c;
+  line-height: 1.6;
+  font-size: 0.95rem;
+  text-shadow: none;
+}
+
+/* Restored original tech stack pill layout */
+.tech-stack {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: center;
+  margin-top: 2rem;
+}
+
+.tech-stack span {
+  background: rgba(0, 186, 255, 0.12);
+  color: #003366;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  border: 1px solid rgba(0, 212, 255, 0.4);
+  font-size: 0.9rem;
+  font-weight: 500;
+  text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.8), 0 0 3px rgba(0, 186, 255, 0.4);
+  transition: all 0.3s ease;
+  animation: textFlicker 3s infinite;
+  box-shadow: 0 0 6px rgba(0, 212, 255, 0.2);
+}
+
+/* ===== WORK EXPERIENCE SECTION ===== */
+
+.work-experience {
+  margin: 4rem 0 2rem; /* unchanged; acts as standard section spacing */
+  padding: 0 20px;
+  animation: startup 1.5s ease-out;
+}
+
+/* Work experience heading inherits unified 1.5rem style */
+
+.experience-card h3 {
+  color: #00baff;
+  font-size: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.experience-card .role {
+  color: #ffffff;
+  font-size: 1.2rem;
+  margin-bottom: 0.5rem;
+}
+
+.experience-card .duration {
+  color: #aaaaaa;
+  font-size: 1rem;
+  margin-bottom: 1rem;
+}
+
+.experience-card p {
+  color: #ffffff;
+  line-height: 1.6;
+}
+
+/* ===== ADDITIONAL AWARDS SECTION ===== */
+
+.additional-awards {
+  margin: 4rem 0 2rem;
+}
+
+/* ===== HACKATHON & CERTIFICATES SECTIONS ===== */
+
+.hackathon-section,
+.certificates-section {
+  padding: 0 20px;
+  margin: 4rem 0 2rem;
+  animation: startup 1.5s ease-out;
+}
+
+/* Additional awards heading inherits unified 1.5rem style */
+
+.awards-card h3 {
+  color: #00baff;
+  text-shadow: 0 0 4px #fff, 0 0 8px #00baff;
+  font-size: 1.2rem;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+  animation: textFlicker 3s infinite;
+}
+
+.awards-card p {
+  color: #e0e0e0;
+  line-height: 1.6;
+  font-size: 0.95rem;
+  text-shadow: 0 0 1px rgba(255, 255, 255, 0.5);
+}
+
+.awards-list {
+  list-style: none;
+  padding: 0;
+}
+
+.awards-list li {
+  background: rgba(0, 186, 255, 0.1);
+  border: 1px solid #00baff;
+  border-radius: 8px;
+  padding: 1rem;
+  margin: 0.8rem 0;
+  color: #ffffff;
+}
+
+.award-title {
+  color: #00baff;
+  font-weight: bold;
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+/* ===== RESPONSIVE DESIGN ===== */
+
+@media (max-width: 768px) {
+  .content-wrapper {
+    padding: 0 1rem;
+  }
+  
+  header { padding: 1.6rem 1rem 1.4rem; margin-bottom: 4.6rem; margin-top: 0.3rem; }
+  .home-container { padding-top: 8rem; }
+  header h1 { font-size: 2.8rem; }
+  .showcase h2 { font-size: 2rem; }
+  
+  .featured-game h3 {
+    padding: 0 20px;
+    margin: -35px 0 2rem;
+    animation: startup 1.5s ease-out;
+  }
+  
+  .about-content {
+    gap: 1rem;
+  }
+  
+  /* Keep pill container responsive */
+  .tech-stack { gap: 0.75rem; }
+  
+  .home-container {
+    background: rgba(0, 186, 255, 0.08);
+    color: #003366;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    border: 1px solid rgba(0, 186, 255, 0.3);
+    font-size: 0.9rem;
+    text-shadow: 0 0 2px rgba(0, 186, 255, 0.4);
+    transition: all 0.3s ease;
+    animation: textFlicker 3s infinite;
+    padding-top: 8rem; /* mobile push */
+  }
+}
+
+/* Ultra-small devices refinements (<=600px) layered after shared component _mobile.css to ensure specificity for structural layout */
+@media (max-width:600px) {
+  .content-wrapper { padding: 0 0.85rem; }
+  .home-container { padding-top: 7.2rem; }
+  header { margin-bottom: 3.8rem; }
+  .slices-grid { gap: 0.9rem; }
+  .slice-details pre { padding: 0.55rem 0.65rem; }
+  .slice-details code { font-size: 0.7rem; }
+  .game-card { margin: 0.6rem auto 0; }
+  .experience-card, .about-card { margin-top: 0.4rem; }
+  .game-footer { padding: 0.9rem 1rem; }
+  .control-info { gap: 0.55rem; }
+  .control-info span { padding: 0.25rem 0.55rem; font-size: 0.63rem; }
+  .download-btn { font-size: 0.8rem; }
+  .education-section { padding: 0.75rem; }
+}
+
+/* Hover state for tech-stack pills (outside media query) */
+.tech-stack span:hover {
+  background: rgba(0, 186, 255, 0.20);
+  transform: translateY(-2px);
+  box-shadow: 0 0 10px rgba(0, 212, 255, 0.3);
+  color: #001a33;
+  border-color: rgba(0, 212, 255, 0.6);
+  text-shadow: 1px 1px 3px rgba(255, 255, 255, 0.9), 0 0 4px rgba(0, 186, 255, 0.6);
+}
+
+/* ===== PS2 INSPIRED AMBIENT LAYER ===== */
+/* Boot swirl removed from global background; relocated into Hackathon card */
+
+/* ===== SUBTLE PS2 PILLAR FIELD ===== */
+.ps2-pillar-field { position: fixed; inset:0; pointer-events:none; z-index:1; overflow:hidden; }
+.ps2-pillar-field .pillar {
+  position:absolute;
+  bottom:-25%;
+  width: clamp(70px, 9vw, 140px);
+  height: 160%;
+  background:
+    linear-gradient(to top, rgba(0,186,255,0.055), rgba(0,186,255,0.0) 38%),
+    linear-gradient(to top, rgba(0,120,170,0.075), rgba(0,120,170,0.0) 55%);
+  mix-blend-mode: screen;
+  filter: blur(2px) saturate(120%);
+  opacity:0.14;
+  animation: pillarDrift 46s linear infinite;
+  transform: translateZ(0) scaleY(1.05);
+  will-change: transform, opacity;
+  border-radius: 2px;
+}
+.ps2-pillar-field .pillar::after {
+  content:'';
+  position:absolute; inset:0;
+  background:
+    linear-gradient(to top, rgba(255,255,255,0.25), transparent 25%),
+    repeating-linear-gradient(
+      to bottom,
+      rgba(255,255,255,0.035) 0px,
+      rgba(255,255,255,0.035) 2px,
+      rgba(255,255,255,0) 2px,
+      rgba(255,255,255,0) 4px
+    );
+  opacity:0.12;
+  mix-blend-mode: overlay;
+  animation: pillarSheen 9s ease-in-out infinite;
+}
+.ps2-pillar-field .p1 { left:8%; animation-delay:-6s; }
+.ps2-pillar-field .p2 { left:23%; animation-delay:-18s; animation-duration:52s; opacity:0.12; }
+.ps2-pillar-field .p3 { left:41%; animation-delay:-30s; animation-duration:50s; }
+.ps2-pillar-field .p4 { left:59%; animation-delay:-12s; animation-duration:54s; opacity:0.13; }
+.ps2-pillar-field .p5 { left:74%; animation-delay:-25s; animation-duration:48s; }
+.ps2-pillar-field .p6 { left:88%; animation-delay:-3s; animation-duration:56s; opacity:0.11; }
+
+@keyframes pillarDrift {
+  0% { transform: translate3d(0,0,0) scaleY(1.05); opacity:0; }
+  6% { opacity:0.14; }
+  50% { transform: translate3d(0,-6%,0) scaleY(1.08); }
+  94% { opacity:0.14; }
+  100% { transform: translate3d(0,0,0) scaleY(1.05); opacity:0; }
+}
+@keyframes pillarSheen {
+  0%,100% { opacity:0.05; filter: brightness(1); }
+  50% { opacity:0.16; filter: brightness(1.3); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ps2-pillar-field .pillar { animation: none !important; }
+  .ps2-pillar-field .pillar::after { animation: none !important; }
+}

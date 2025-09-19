@@ -1,0 +1,25 @@
+/* Mobile enhancements for improved layout without altering desktop aesthetics */
+@media (max-width:600px) {
+  .slices-grid { grid-template-columns: 1fr; gap: 0.9rem; }
+  .slice { padding: 14px; }
+  .slice h3 { font-size: 0.95rem; }
+  .slice-description { font-size: 0.78rem; line-height: 1.35; }
+  .slice-details summary { font-size: 0.75rem; }
+  .slice-details p, .slice-details li { font-size: 0.74rem; }
+  .slice-details pre code { font-size: 0.7rem; }
+  .preview-container { aspect-ratio: 16/9; min-height: 180px; }
+  .play-preview-btn { width:60px; height:60px; }
+  header h1 { font-size: 2.2rem; }
+  header p { font-size: 1rem; }
+  .about-card p { font-size: 0.85rem !important; }
+  .tech-stack span { font-size: 0.65rem; padding: 0.4rem 0.6rem; }
+  .experience-entry h3 { font-size: 1rem; }
+  .experience-entry p, .experience-entry li { font-size: 0.78rem; }
+  .education-item .degree { font-size: 0.8rem; }
+  .education-item .school, .education-item .duration { font-size: 0.72rem; }
+  .game-card { padding: 16px; }
+  .game-info h3 { font-size: 1.05rem; }
+  .game-info p { font-size: 0.8rem; }
+  .control-info span { font-size: 0.65rem; }
+  .download-btn { font-size: 0.85rem; padding: 0.6rem 1rem; }
+}

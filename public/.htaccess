@@ -1,0 +1,17 @@
+# Enable Brotli compression headers for Unity WebGL
+<Files "*.br">
+  Header set Content-Encoding br
+</Files>
+
+# Set MIME types for Unity WebGL files
+AddType application/octet-stream .data
+AddType application/javascript .js.br
+AddType application/octet-stream .wasm.br
+AddType application/gzip .data.gz
+AddType application/gzip .wasm.gz
+AddType application/javascript .js.gz
+
+# Enable CORS for WebGL
+Header always set Access-Control-Allow-Origin "*"
+Header always set Access-Control-Allow-Methods "GET, POST, OPTIONS"
+Header always set Access-Control-Allow-Headers "*"

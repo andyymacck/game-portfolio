@@ -1,0 +1,18 @@
+# Ignore local ffmpeg binaries and archives
+tools/ffmpeg/
+tools/ffmpeg/**
+tools/ffmpeg/ffmpeg-*.zip
+
+# Optional: ignore VS Code workspace junk
+.vscode/
+
+# Node/CRA typical ignores (if missing)
+node_modules/
+.DS_Store
+*.log
+npm-debug.log*
+yarn-error.log
+node_modules
+
+# Do not commit build artifacts
+build/
