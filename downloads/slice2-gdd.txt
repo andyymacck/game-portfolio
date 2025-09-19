@@ -1,98 +1,257 @@
 Vertical Slice 2 – Game Design Document (Condensed)
 =================================================
 
-Title (Working): Shard Runner
-Genre: 2.5D Action Adventure / Collect–Explore Hybrid
-Engine: Unity (C#)
-Target Platform: WebGL (Desktop Focus)
-Estimated Final Scope: 12–15 min polished slice
+Game Design Document: Banana Quest (Working Title)
 
-1. High Concept
-----------------
-Traverse a fragmented valley suspended over the void while managing momentum and timing. The player harvests kinetic shards to unlock traversal events and power gated encounters. Slice 2 focuses on traversal clarity + systemic collectible approval pipeline + spline-based guided motion segments.
+1. Game Overview
 
-2. Core Pillars
-----------------
-1. Flow Traversal – Movement should feel continuous: jump → glide curve → rail spline → landing buffer.
-2. Intent Confirmation – Pickups & triggers route through approval callbacks (prevents race conditions, supports multiplayer scaling).
-3. Modular Progression – Unlocks (gates, rails, lifts) react to shard counts, not scripted sequence.
-4. Readable Risk – Each movement challenge surfaces cost (fall vector, recovery ladder, checkpoint light).
+Title: BananaMan - and the quest of the Citrus Cliffs (Working Title)
 
-3. Player Mechanics (Implemented / Planned)
-------------------------------------------
-Implemented:
-- Directional movement (Catmull-Rom guided segments optional)
-- Jump + coyote time + buffered early jump
-- Shard Collect (approval queue)
-- Teleport Node (fade out → reposition → fade in coroutine)
-Planned (Stretch):
-- Short glide (decay curve control)
-- Chain dash nodes
+Genre: 2.5D Platformer / Collectathon
 
-4. Collectible System
-----------------------
-Object enters pending state → calls Approve() when safe → publishes event to progression manager.
-Benefits: Avoids double-consume during physics settle; easy to extend for network authority.
+Platforms: PC, Nintendo Switch, PS5, Xbox Series X
 
-5. Progression & Gates
------------------------
-Shard thresholds: 5 (Unlock Rail 1), 10 (Power Lift), 15 (Open Gate). Each gate listens for shard total event broadcast.
+Target Audience: All Ages; fans of platformers, nostalgic gamers, and indie game enthusiasts
 
-6. Enemies (Prototype Only)
-----------------------------
-Light sentry orb: radial patrol + slow projectile. Not combat-heavy in this slice (focus on traversal).
+High Concept: A surreal platforming journey through fruit-themed lands where Banana Man must collect Juice Shards and restore flavor to the Fruit Kingdom.
 
-7. Level Layout Beats
-----------------------
-A. Spawn Plateau – Learn jump + shard pickup (3 shards)
-B. First Gap – Teaches approval delay (UI blip when confirmed)
-C. Rail Segment – Auto-run along spline; player times jump to early exit for bonus shard cluster
-D. Lift Gate – Requires 10 shards; optional side path offers momentum challenge
-E. Teleport Spire – Fade coroutine demonstration; shard cluster reward
-F. Final Gate – Opens at 15, ends slice with vista platform
+2. Narrative
 
-8. UI / Feedback
------------------
-- Shard Bar: dynamic instantiation with positional offsets per icon
-- Approval Pulse: on approval event, icon briefly scales & flashes
-- Gate HUD Hint: gate shows remaining shard delta (e.g. 3 more)
+Setting: Fruit Kingdom – realm made of fantastical environments themed after fruits. Each region has its own biome and guardian.
 
-9. Technical Architecture
---------------------------
-Managers:
-- EventHub: lightweight publish/subscribe (ScriptableEvent style)
-- ProgressionManager: listens to shard total; updates gates
-Core Classes:
-- CollectibleItem, CollectibleApprover
-- SplineMover (CatmullRom evaluator)
-- TeleportController (Coroutine + events for fade)
-Representative Snippet (Collectible Approval):
-public void Approve() {
-    if (!m_isApproved) {
-        m_callback(m_collectableItem);
-        m_isApproved = true;
-    }
-}
+Main Character: Banana Man – a heroic, agile banana in sneakers and gloves, armed with a boomerang-like peel and strong arms.
 
-10. Risks & Mitigations
-------------------------
-Risk: WebGL performance dips with overdraw noise.
-Mitigation: Reduce overlapping transparency; pool shard VFX.
-Risk: Mis-timed approval vs. UI expectations.
-Mitigation: Add pending shimmer then confirmation pulse.
+Story Premise: A flavor-stealing force called "The Rot" is leeching the essence from the Fruit Kingdom. Guided by the mystical Pineapple Oracle, Banana Man embarks on a quest to retrieve the stolen Juice Shards.
 
-11. Milestone Plan
--------------------
-Day 1–2: Layout blockout + spline rails.
-Day 3–4: Collectible approval + shard bar UI.
-Day 5: Gates & progression events.
-Day 6: Teleport + polish passes (coyote time, buffered input).
-Day 7: Visual pass + performance trim + deploy.
+Progression: Five regions must be restored by collecting Juice Shards and defeating corrupted fruit guardians. Between levels, the story unfolds with comic-style cutscenes and whimsical dialogues.
 
-12. Stretch Goals (Post-Slice)
-------------------------------
-- Glide mechanic with stamina arc
-- Enemy escalation (shielded node + chase drone)
-- Shard combo multiplier (speed boost)
+3. Gameplay Mechanics
 
-End of Document
+Core Loop:
+
+Explore themed levels
+
+Collect Juice Shards and hidden items
+
+Unlock abilities and paths
+
+Defeat region bosses
+
+Progress through story
+
+Player Abilities:
+
+Jump / Double Jump
+
+Peel Glide (slow fall)
+
+Banana Boomerang (ranged attack + collect distant items)
+
+Banana Punch (melee combo attack)
+
+Banana Throw (powerful close-range projectile using limited throwable fruits like coconuts or mangos)
+
+Combat System:
+
+Combine punch combos and banana boomerangs
+
+Use throwables for high damage or solving environmental puzzles
+
+Enemies drop Fruit Tokens and sometimes health
+
+Collectables:
+
+Juice Shards (primary objective, 5–7 per level)
+
+Fruit Tokens (used to unlock cosmetics, mini-games, and concept art)
+
+Flavor Seeds (used to activate upgrades in the hub world)
+
+Power-Ups:
+
+Temporary forms (e.g., Chili Mode for speed, Coconut Armor for defense)
+
+Juice Meter: fills up during combat; activates temporary Juice Rush Mode (increased speed, auto-reflect boomerang, invincibility)
+
+4. Level Design & Progression
+
+Level Types:
+
+Platforming stages: large, interconnected 2.5D levels with side paths
+
+Puzzle rooms: focus on using throwables and switches
+
+Combat arenas: defend against waves of fruit monsters
+
+Secret stages: bonus content unlocked with Fruit Tokens
+
+World Themes:
+
+Citrus Cliffs – jungle-like cliffs with ziplines and bouncy oranges
+
+Melon Mines – crystal-filled underground caverns with minecarts
+
+Mango Mirage – sandy desert with mirages and quicksand
+
+Grape Heights – cloud platforms, gusty winds, and floating gardens
+
+Rotten Core – corrupted biome filled with decay, acid pools, and the final boss
+
+Hub World: Fruit Square
+
+Interactable NPCs (fruit-themed characters)
+
+Upgrade trees and Juice Shard monuments
+
+Mini-game kiosk and arcade machine
+
+Cosmetic vendor with alternate banana costumes
+
+5. Art & Visuals
+
+Visual Style: Stylized, saturated colors with a dreamlike quality; chunky and expressive character models
+
+Camera: 2.5D with dynamic angles during special sequences or boss fights
+
+Animation Style: Exaggerated squash-and-stretch, with lots of idle animations and victory poses
+
+UI:
+
+Health displayed as floating fruit hearts
+
+Juice Meter around Banana Man's outline (fills with glow effect)
+
+Collection counters and power-up icons in the corners
+
+Menu and map UI inspired by Mystical Ninja and Klonoa with playful, bouncing icons
+
+6. Sound & Music
+
+Music Style:
+
+Tropical instruments (steel drums, marimbas) in early levels
+
+Surreal ambient synths in later, corrupted zones
+
+Boss music: funky, energetic, with percussion and fruit-themed motifs
+
+Sound Effects:
+
+Punches with comedic 'whomp' sounds
+
+Boomerang whooshes
+
+Collectables make juicy pops and squishes
+
+Voice Snippets:
+
+Banana Man: “Let’s peel out!” “YAH!” “That’s bananas!”
+
+Enemies have cartoon-style grunts and squeaks
+
+7. Enemies & Bosses
+
+Enemy Types:
+
+Fruit Flies – fast, divebombing pests
+
+Rotten Bats – swarm in dark caverns
+
+Moldy Munchers – chase the player and explode on contact
+
+Juice Leeches – steal your Juice Meter charge
+
+Mini-Bosses:
+
+Grape Hydra – regenerates heads unless burned
+
+Citrus Crusher – charges and creates shockwaves
+
+Final Boss:
+
+The Rot – a giant shadowy mold-beast trying to drain the Fruit Kingdom’s life essence
+
+8. UI/UX
+
+HUD Elements:
+
+Heart-based Health
+
+Juice Meterring
+
+Collectable Tracker (on pause screen and end-of-level screen)
+
+GEMS
+
+Menus:
+
+Fruit-themed tabs
+
+Stage select map with character path and unlockable cutscenes
+
+Accessibility:
+
+Button remapping
+
+Subtitles and voice cues
+
+High-contrast mode
+
+9. Technical Details
+
+Engine: Unity with URP or (Nanite for stylized rendering, 2.5D camera)
+
+Resolution: Target 1080p–4K, 60fps
+
+Save System: Autosave between stages; manual saves in hub world
+
+Tools Used: Blender (3D assets), Aseprite (UI mockups), FMOD (audio integration)
+
+10. Production Plan
+
+Team Composition:
+
+Game Designer / Programmer
+
+3D Artist / Animator
+
+Sound & Music Composer
+
+Writer / Narrative Designer
+
+Milestone Roadmap:
+
+Month 1: Movement + Combat Prototype (Punch, Pickup item)
+
+Month 2–3: Citrus Cliffs prototype level + UI mockups
+
+Month 4–6: Melon Mines, Mango Mirage; Implement Juice Shard system
+
+Month 7–9: Grape Heights, Rotten Core; hub world polish
+
+Month 10–12: Testing, optimization, full cutscene integration
+
+
+12. Appendix
+
+Inspirations:
+
+Klonoa 2: Lunatea’s Veil
+
+Kirby 64: The Crystal Shards
+
+Mystical Ninja: Starring Goemon
+
+Donkey Kong Country series
+
+Glossary:
+
+Juice Shards = story-driving collectibles
+
+Fruit Tokens = optional unlockables
+
+Flavor Seeds = ability progression
+
+Juice Meter = power-up energy bar
+
+

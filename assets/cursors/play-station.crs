@@ -1,0 +1,45 @@
+﻿[Wait]
+Path=PS Busy 2.ani
+
+[NWPen]
+Path=PS Pen 2.ani
+
+[IBeam]
+Path=PS Text 2.ani
+
+[Arrow]
+Path=Playstation.ani
+
+[UpArrow]
+Path=PS Alt Select.ani
+
+[SizeNWSE]
+Path=PS Diagonal 1.ani
+
+[SizeNESW]
+Path=PS Diagonal 2.ani
+
+[Help]
+Path=PS Help.ani
+
+[SizeWE]
+Path=PS Horizontal.ani
+
+[Hand]
+Path=PS Link.ani
+
+[SizeAll]
+Path=PS Move.ani
+
+[Crosshair]
+Path=PS Precise.ani
+
+[No]
+Path=PS Unavailable.ani
+
+[SizeNS]
+Path=PS Vertical.ani
+
+[AppStarting]
+Path=PS Working.ani
+
