@@ -1,3 +1,11 @@
+# Game Portfolio
+
+[![Deploy](https://github.com/andyymacck/game-portfolio/actions/workflows/deploy.yml/badge.svg)](https://github.com/andyymacck/game-portfolio/actions/workflows/deploy.yml)
+
+Live: https://andyymacck.github.io/game-portfolio
+
+---
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
