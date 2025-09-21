@@ -28,6 +28,11 @@ const Home = () => {
   const [s2GddSize, setS2GddSize] = React.useState(null);
   const [s1PdfExists, setS1PdfExists] = React.useState(true);
   const [s2PdfExists, setS2PdfExists] = React.useState(true);
+  // Determine if featured download is an external URL (e.g., Google Drive)
+  const isFeaturedExternal = !!(assets.featured.download && /^https?:\/\//.test(assets.featured.download));
+  const featuredLinkProps = isFeaturedExternal
+    ? { target: '_blank', rel: 'noopener noreferrer' }
+    : { download: true };
   const bootFX = (el) => {
     if (!el) return;
     el.classList.add('crt-boot', 'chroma-bleed');
@@ -258,9 +263,11 @@ const Home = () => {
         <section className="about-me">
           <h2>About Me</h2>
           <div className="about-card">
-            <p>Hello, my name is Andrew but my friends call me Andy.</p>
-            <p>I am a game developer with both a Bachelor's in Computing and Information Systems, and a Diploma in Arts and Sciences. I separate myself from others by being immersed in the cross‑section of the art of programming, system design, and have an interest in all things that go into making games.</p>
-            <p>With a depth of knowledge and experience in C#, C++, and game design principles, I am highly fixated on creating interesting and impactful gameplay mechanics while optimizing performance and maintaining solid system design principles. I thrive in collaborative environments and enjoy tackling complex technical challenges with like minded people.</p>
+            <div className="about-content">
+              <p>Hello, Welcome to my Game Dev Portfolio!<br /></p>
+              <p>My name is Andrew but my friends call me Andy. I am a game developer with both a Bachelor's in Computing and Information Systems, and a Diploma in Arts and Sciences. I separate myself from others by being immersed in the cross‑section of the art of programming, and system design while having a keen interest in all things that go into making games.</p>
+              <p>With depth of knowledge and experience in C#, C++, and game design principles, I am highly fixated on creating interesting and impactful gameplay mechanics while optimizing performance and maintaining solid system design principles. I thrive in collaborative environments and enjoy tackling complex technical challenges with like minded people.</p>
+            </div>
             <div className="tech-stack">
               <span>Game Development</span>
               <span>Technical Development</span>
@@ -724,7 +731,11 @@ MovementOffsetYaw = UKismetMathLibrary::NormalizedDeltaRotator(MovementRotation,
             <div className="corner-glow cg2" />
             <div className="game-info">
               <h3>Andys Adventure/ Touchy RPG</h3>
-              <p>This project is top down 2D action-adventure built in Unity, highly inspired by A Link to the Past, mixed with a bit of StarDew Valley. It features multi directional character movement, attacks, and interaction systems, a variety of enemies with different AI behaviors, and several boss fights that showcases simplified yet advanced programming logic.</p>
+              <p>
+                This project is top down 2D action-adventure built in Unity, highly inspired by A Link to the Past, mixed with a bit of StarDew Valley.
+                It features multi directional character movement, attacks, and interaction systems, a variety of enemies with different AI behaviors,
+                and several boss fights that showcases simplified yet advanced programming logic.
+              </p>
             </div>
             <div className="game-preview">
               <div className={`preview-container ${showFeatured ? 'show-game' : ''}`}>
@@ -783,6 +794,114 @@ MovementOffsetYaw = UKismetMathLibrary::NormalizedDeltaRotator(MovementRotation,
                 )}
               </div>
             </div>
+            {/* Featured Read More (below video) */}
+            <details
+              className="slice-details"
+              open={openSliceDetails === 'featured'}
+              onToggle={(e) => {
+                if (e.target.open) {
+                  setOpenSliceDetails('featured');
+                } else if (openSliceDetails === 'featured') {
+                  setOpenSliceDetails(null);
+                }
+                SFX.play(e.target.open ? 'click' : 'click-soft');
+              }}
+              style={{marginTop:'0.75rem'}}
+            >
+              <summary>Read More</summary>
+              <div>
+                <h4>Directional Combat System</h4>
+                <p>Player attacks align with facing direction, with animations + hit detection via BoxCastAll:</p>
+                <pre><code>{`if (dir.normalized == Vector2.right) {
+    attackAnimator.SetTrigger("Attack");
+    playerAttackSprite.flipX = false;
+}
+RaycastHit2D[] hits = Physics2D.BoxCastAll(transform.position + offset, boxSize, 0f, transform.right, 0f);`}</code></pre>
+                <p>Gives Zelda-like melee combat with precise hitboxes.</p>
+
+                <h4>Game Summary</h4>
+                <p>
+                  This project is a 2D action-adventure built in Unity, featuring a player character with movement, combat, and interaction systems,
+                  a variety of enemies with AI behaviors, and several boss fights that showcase advanced programming logic.
+                </p>
+
+                <h4>Player Systems</h4>
+                <p>
+                  Sprite flipping & animation syncing via a dedicated renderer. World interactions triggered by a PlayerInteraction component,
+                  letting the player activate objects, puzzles, and events:
+                </p>
+                <pre><code>{`if (interactable != null && Input.GetKeyDown(KeyCode.E)) {
+    interactable.Interact();
+}`}</code></pre>
+
+                <h4>Enemy AI</h4>
+                <p>
+                  Standard enemies extend a shared EnemyAI base class, defining pursuit, attack, and patrol logic. Ranged enemies shoot projectiles when in range.
+                  Polymorphic design allows adding new enemy types with minimal changes:
+                </p>
+                <pre><code>{`if (Vector3.Distance(transform.position, player.transform.position) < attackRange) {
+    ShootProjectile();
+}`}</code></pre>
+
+                <h4>Boss Design & Programming Logic</h4>
+                <p>
+                  Each boss builds on the shared EnemyAI state machine and overrides its Attack/Move methods to create distinct mechanics.
+                  This modular design lets you scale new bosses without rewriting the framework.
+                </p>
+
+                <h4>Giant Bee Boss</h4>
+                <p>Chases the player and performs dash attacks when in range. Cooldowns prevent spamming; dash damage is applied only on contact.</p>
+                <pre><code>{`if (Vector3.Distance(transform.position, player.transform.position) < minDistanceToDash) {
+    StartCoroutine(DashAttack());
+}
+
+IEnumerator DashAttack() {
+    Vector2 dir = (player.transform.position - transform.position).normalized;
+    rb.velocity = dir * dashSpeed;
+    yield return new WaitForSeconds(dashDuration);
+    rb.velocity = Vector2.zero;
+}`}</code></pre>
+                <p>Fast, aggressive melee boss that pressures the player into dodging.</p>
+
+                <h4>Slime Boss</h4>
+                <p>Alternates between invulnerable spawn phases and vulnerable idle phases. Minion counts scale with remaining HP.</p>
+                <pre><code>{`float hpRatio = attackUnit.currentHP / attackUnit.unit.maxHP;
+if (hpRatio > 0.5f) {
+    Spawn(2);
+} else if (hpRatio > 0.25f) {
+    Spawn(4);
+} else {
+    Spawn(5);
+}`}</code></pre>
+                <p>Dynamic fight where the boss becomes harder as it weakens.</p>
+
+                <h4>Final Boss</h4>
+                <p>Combines teleportation and burst‑fire projectiles. Teleport avoids repeating the same location; bursts create pattern‑based difficulty.</p>
+                <pre><code>{`if (teleportCoolDown < 0) {
+    int nextLocationIndex = Random.Range(0, teleportLocations.Length - 1);
+    transform.position = teleportLocations[nextLocationIndex].transform.position;
+}
+
+IEnumerator BurstFire() {
+    for (int i = 0; i < 3; i++) {
+        Vector2 dir = (player.transform.position - transform.position).normalized;
+        Instantiate(projectilePrefab, transform.position, Quaternion.identity)
+            .GetComponent<Bullet>().SetUpBullet(dir, player);
+        yield return new WaitForSeconds(0.5f);
+    }
+}`}</code></pre>
+                <p>Epic final encounter mixing ranged pressure and unpredictability.</p>
+
+                <h4>Why This Stands Out</h4>
+                <ul>
+                  <li>Bosses aren’t just “tougher enemies” — each is defined by programming logic that creates a unique playstyle.</li>
+                  <li>The AI state machine ensures consistency, while individual scripts extend behaviors.</li>
+                  <li>Difficulty naturally escalates: dash pressure → minion waves → teleport & bullet hell.</li>
+                </ul>
+
+                <p style={{marginTop:'0.5rem'}}>Together, these bosses show off strong AI architecture, modular design, and gameplay variety — a highlight achievement in this project.</p>
+              </div>
+            </details>
             <div className="game-footer">
               <div className="game-extra"></div>
               <div className="game-footer-row">
@@ -795,7 +914,7 @@ MovementOffsetYaw = UKismetMathLibrary::NormalizedDeltaRotator(MovementRotation,
                   </div>
                 </div>
                 {assets.featured.download ? (
-                  <a href={assets.featured.download} className="download-btn" download onMouseOver={() => SFX.play('hover')} onClick={() => SFX.play('click')}>
+                  <a href={assets.featured.download} className="download-btn" {...featuredLinkProps} onMouseOver={() => SFX.play('hover')} onClick={() => SFX.play('click')}>
                     <span className="download-icon">↓</span>
                     Download Game
                   </a>

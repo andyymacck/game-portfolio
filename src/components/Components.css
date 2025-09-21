@@ -88,7 +88,8 @@
     conic-gradient(from 35deg at 50% 50%, rgba(0,186,255,0.07), transparent 40%, rgba(0,186,255,0.04));
   mix-blend-mode: screen;
   pointer-events: none;
-  z-index: 1;
+  z-index: 4; /* above inner content (images use z-index:2) */
+  opacity: 0.35; /* ensure baseline visibility even without animation */
   animation: bootSwirl 52s linear infinite, hueShift 36s ease-in-out infinite;
 }
 
@@ -176,10 +177,25 @@
 .hackathon-indicator { font-size: 1.1rem; font-weight: 600; }
 .hackathon-title { flex: 1; padding-right: 0.75rem; color: #1d1d1d; }
 .hackathon-panel { overflow: hidden; transition: max-height 0.5s ease; }
-.hackathon-inner { padding: 0.8rem 0.5rem 1rem 0.5rem; animation: panelFade 0.4s ease; }
+.hackathon-inner {
+  padding: 0.8rem 0.5rem 1rem 0.5rem;
+  animation: panelFade 0.4s ease;
+  display: grid;             /* match About Me grid-based spacing */
+  gap: 0.75rem;              /* slightly tighter spacing */
+}
 .hackathon-panel, .hackathon-image-wrapper { will-change: max-height; }
 .hackathon-role strong { color: #101010; }
-.hackathon-role, .hackathon-desc { color: #222; font-size: 0.85rem; line-height: 1.5; }
+.hackathon-author,
+.hackathon-role,
+.hackathon-desc {
+  color: #222;
+  font-size: 0.98rem;       /* match About Me size */
+  line-height: 1.45;        /* tighter line spacing */
+}
+
+/* Remove default margins and indent subsequent paragraphs for rhythm (desktop) */
+.hackathon-inner p { margin: 0; }
+.hackathon-inner p + p { text-indent: 1rem; }
 .hackathon-tech { display: flex; flex-wrap: wrap; gap: 0.6rem; margin: 0.8rem 0 0.4rem; }
 .hackathon-tech span { background: rgba(0,186,255,0.12); border: 1px solid rgba(0,186,255,0.3); color: #003366; padding: 0.3rem 0.7rem; font-size: 0.7rem; border-radius: 8px; text-shadow: 1px 1px 2px rgba(255,255,255,0.7); }
 
@@ -673,6 +689,12 @@
 }
 @media (max-width: 768px) {
   .education-grid { grid-template-columns: 1fr; }
+}
+
+/* Mobile readability: keep full width, comfortable size, no indent */
+@media (max-width:600px) {
+  .hackathon-inner p { font-size: 0.92rem; line-height: 1.48; }
+  .hackathon-inner p + p { text-indent: 0; }
 }
 
 .award-entry {

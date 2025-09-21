@@ -26,8 +26,9 @@ export default {
     thumb: pub('unity/Touchy.JPG'),
     // Re-enabled after compression
     video: pub('unity/Untitled video - Made with Clipchamp.mp4'),
-    // Removed .rar download ( > 1GB ) – leave null or replace with external link in UI.
-    download: null
+    // Point to archived build placed by scripts/make-featured-zip.ps1
+    // If you generate 7z instead, update to 'downloads/featured-unity.7z'
+    download: pub('downloads/featured-unity.zip')
   },
   hackathon: {
     image: `${process.env.PUBLIC_URL}/toyz-cars.jpg`,
