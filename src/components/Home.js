@@ -270,7 +270,7 @@ const Home = () => {
             </div>
             <div className="tech-stack">
               <span>Game Development</span>
-              <span>Technical Development</span>
+              <span>Technical Design</span>
               <span>Technical Art</span>
               <span>Unity</span>
               <span>Unreal Engine</span>
