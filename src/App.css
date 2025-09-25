@@ -210,6 +210,21 @@ body.native-text-cursor { cursor: text !important; }
   transform: translateY(-5px) rotate(0.02deg) skewX(0.03deg);
 }
 
+/* ===== MOBILE BACKGROUND FIXES ===== */
+@media (max-width: 768px) {
+  /* Ensure consistent grey background on mobile (prevent blue tint) */
+  .portfolio-container:has(.home-container) {
+    background: #b0b0b0 !important;
+  }
+  
+  /* Adjust texture opacity for mobile screens */
+  .portfolio-container:has(.home-container)::before {
+    opacity: 0.75;
+    /* Slightly stronger contrast for mobile */
+    filter: contrast(1.03) saturate(0.92);
+  }
+}
+
 /* ===== PIXELATED ZOOM FOR THUMBNAILS ===== */
 .video-thumbnail img,
 .game-thumbnail {
