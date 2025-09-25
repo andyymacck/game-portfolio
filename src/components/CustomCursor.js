@@ -28,6 +28,10 @@ export default function CustomCursor() {
   }, []);
 
   useEffect(() => {
+    let rafId = null;
+    let lastElementCheck = 0;
+    let cachedElement = null;
+    
     const onMove = (e) => {
       // If a modal is open, freeze the custom cursor to reduce repaint churn
       if (document.body.classList.contains('modal-open')) {
@@ -35,25 +39,37 @@ export default function CustomCursor() {
         if (anim.current) { cancelAnimationFrame(anim.current); anim.current = null; }
         return;
       }
+      
       pos.current.x = e.clientX;
       pos.current.y = e.clientY;
+      
+      // Throttle element detection to reduce DOM queries
+      const now = performance.now();
+      if (now - lastElementCheck > 16) { // ~60fps throttling
+        lastElementCheck = now;
+        cachedElement = document.elementFromPoint(e.clientX, e.clientY);
+      }
+      
       if (!anim.current) {
         const step = () => {
-          // Dynamic smoothing: faster on big jumps, slower on micro-moves
+          // Simplified easing for better performance
           const dx = pos.current.x - cur.current.x;
           const dy = pos.current.y - cur.current.y;
           const dist = Math.hypot(dx, dy);
-          let ease;
-          if (dist > 80) ease = 0.22;
-          else if (dist > 40) ease = 0.16;
-          else if (dist > 15) ease = 0.1;
-          else ease = 0.075; // very smooth when close
+          
+          // Reduced easing complexity
+          const ease = dist > 50 ? 0.25 : dist > 20 ? 0.15 : 0.08;
+          
           cur.current.x += dx * ease;
           cur.current.y += dy * ease;
+          
           if (ref.current) {
-            ref.current.style.transform = `translate(${cur.current.x}px, ${cur.current.y}px)`;
+            // Use translate3d for hardware acceleration
+            ref.current.style.transform = `translate3d(${cur.current.x}px, ${cur.current.y}px, 0)`;
           }
-          if (Math.abs(cur.current.x - pos.current.x) > 0.1 || Math.abs(cur.current.y - pos.current.y) > 0.1) {
+          
+          // Higher threshold to reduce animation frames
+          if (Math.abs(dx) > 0.5 || Math.abs(dy) > 0.5) {
             anim.current = requestAnimationFrame(step);
           } else {
             anim.current = null;
@@ -62,10 +78,10 @@ export default function CustomCursor() {
         anim.current = requestAnimationFrame(step);
       }
 
-      const el = document.elementFromPoint(e.clientX, e.clientY);
-      if (!el) return;
+      if (!cachedElement) return;
+      
       // Show native cursor for text fields and hide custom
-      if (el.closest(SELECTOR_NATIVE_TEXT)) {
+      if (cachedElement.closest(SELECTOR_NATIVE_TEXT)) {
         document.body.classList.add('native-text-cursor');
         setHidden(true);
         return;
@@ -74,12 +90,12 @@ export default function CustomCursor() {
         setHidden(false);
       }
 
-      // Hand over interactives
-      const now = performance.now();
-      const overInteractive = !!el.closest(SELECTOR_INTERACTIVE);
+      // Hand over interactives with reduced checking frequency
+      const overInteractive = !!cachedElement.closest(SELECTOR_INTERACTIVE);
       if (overInteractive) lastInteractive.current = now;
-      // Add a brief intent delay before switching to hand to reduce rapid toggling
-  if (now - lastInteractive.current < 85) {
+      
+      // Simplified variant switching
+      if (now - lastInteractive.current < 100) {
         setVariant('hand');
       } else {
         setVariant('arrow');

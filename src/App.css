@@ -122,11 +122,12 @@ body.native-text-cursor { cursor: text !important; }
   width: 20px; height: 20px; /* slightly larger */
   pointer-events: none;
   z-index: 3000;
-  transform: translate(-100px, -100px); /* offscreen until first move */
+  transform: translate3d(-100px, -100px, 0); /* offscreen until first move, hardware accelerated */
   image-rendering: pixelated;
   background-repeat: no-repeat;
   background-position: 0 0;
   background-size: 20px 20px;
+  will-change: transform; /* Hint browser for optimization */
 }
 .retro-cursor.hidden { opacity: 0; }
 .retro-cursor.arrow { 

@@ -358,24 +358,33 @@ header p {
 
 /* Ultra-small devices refinements (<=600px) layered after shared component _mobile.css to ensure specificity for structural layout */
 @media (max-width:600px) {
-  .content-wrapper { padding: 0 0.85rem; }
-  .home-container { padding-top: 7.2rem; }
-  header { margin-bottom: 3.8rem; }
-  .slices-grid { gap: 0.9rem; }
-  .slice-details pre { padding: 0.55rem 0.65rem; }
-  .slice-details code { font-size: 0.7rem; }
-  .game-card { margin: 0.6rem auto 0; }
-  .experience-card, .about-card { margin-top: 0.4rem; }
-  .game-footer { padding: 0.9rem 1rem; }
-  .control-info { gap: 0.55rem; }
-  .control-info span { padding: 0.25rem 0.55rem; font-size: 0.63rem; }
-  .download-btn { font-size: 0.8rem; }
-  .education-section { padding: 0.75rem; }
+  .content-wrapper { padding: 0 0.7rem; }
+  .home-container { padding-top: 6rem; }
+  header { margin-bottom: 2.5rem; }
+  .slices-grid { gap: 0.6rem; }
+  .slice-details pre { padding: 0.4rem 0.5rem; }
+  .slice-details code { font-size: 0.65rem; }
+  .game-card { margin: 0.3rem auto 0; }
+  .experience-card, .about-card { margin-top: 0.3rem; }
+  .game-footer { padding: 0.7rem 0.8rem; }
+  .control-info { gap: 0.4rem; }
+  .control-info span { padding: 0.2rem 0.4rem; font-size: 0.6rem; }
+  .download-btn { font-size: 0.75rem; }
+  .education-section { padding: 0.6rem; }
 
   /* Mobile: improve readability and avoid dense block */
-  .about-card .about-content { width: 100%; gap: 0.8rem; }
-  .about-card .about-content p { font-size: 0.92rem; line-height: 1.48; }
+  .about-card .about-content { width: 100%; gap: 0.5rem; }
+  .about-card .about-content p { font-size: 0.8rem; line-height: 1.4; }
   .about-card .about-content p + p { text-indent: 0; } /* remove indent on small screens */
+  
+  /* Reduce section spacing */
+  section { margin-bottom: 1.5rem; }
+  section h2 { margin-bottom: 0.6rem; }
+  
+  /* More compact slice details */
+  .slice-details div { padding: 0.5rem 0; }
+  .slice-details ul { margin: 0.3rem 0; padding-left: 1rem; }
+  .slice-details li { margin-bottom: 0.2rem; }
 }
 
 /* Hover state for tech-stack pills (outside media query) */

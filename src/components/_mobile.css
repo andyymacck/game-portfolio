@@ -1,25 +1,72 @@
 /* Mobile enhancements for improved layout without altering desktop aesthetics */
 @media (max-width:600px) {
-  .slices-grid { grid-template-columns: 1fr; gap: 0.9rem; }
-  .slice { padding: 14px; }
-  .slice h3 { font-size: 0.95rem; }
-  .slice-description { font-size: 0.78rem; line-height: 1.35; }
-  .slice-details summary { font-size: 0.75rem; }
-  .slice-details p, .slice-details li { font-size: 0.74rem; }
-  .slice-details pre code { font-size: 0.7rem; }
-  .preview-container { aspect-ratio: 16/9; min-height: 180px; }
-  .play-preview-btn { width:60px; height:60px; }
-  header h1 { font-size: 2.2rem; }
-  header p { font-size: 1rem; }
-  .about-card p { font-size: 0.85rem !important; }
-  .tech-stack span { font-size: 0.65rem; padding: 0.4rem 0.6rem; }
-  .experience-entry h3 { font-size: 1rem; }
-  .experience-entry p, .experience-entry li { font-size: 0.78rem; }
-  .education-item .degree { font-size: 0.8rem; }
-  .education-item .school, .education-item .duration { font-size: 0.72rem; }
-  .game-card { padding: 16px; }
-  .game-info h3 { font-size: 1.05rem; }
-  .game-info p { font-size: 0.8rem; }
-  .control-info span { font-size: 0.65rem; }
-  .download-btn { font-size: 0.85rem; padding: 0.6rem 1rem; }
+  .slices-grid { grid-template-columns: 1fr; gap: 0.6rem; }
+  .slice { padding: 10px; }
+  .slice h3 { font-size: 0.9rem; margin-bottom: 0.4rem; }
+  .slice-description { 
+    font-size: 0.75rem; 
+    line-height: 1.3; 
+    margin-bottom: 0.5rem;
+    /* Truncate long descriptions */
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .slice-details summary { font-size: 0.72rem; padding: 0.4rem 0; }
+  .slice-details p, .slice-details li { font-size: 0.72rem; line-height: 1.35; }
+  .slice-details pre code { font-size: 0.65rem; }
+  .slice-details h4 { font-size: 0.8rem; margin: 0.6rem 0 0.3rem; }
+  .preview-container { aspect-ratio: 16/9; min-height: 160px; }
+  .play-preview-btn { width:50px; height:50px; }
+  
+  /* Header compression */
+  header { margin-bottom: 2.5rem; }
+  header h1 { font-size: 2rem; margin-bottom: 0.3rem; }
+  header p { font-size: 0.9rem; }
+  
+  /* About card - much more compact */
+  .about-card { padding: 12px; margin-top: 0.3rem; }
+  .about-card .about-content { gap: 0.5rem; }
+  .about-card .about-content p { 
+    font-size: 0.8rem !important; 
+    line-height: 1.4;
+    margin-bottom: 0.4rem;
+  }
+  .about-card .about-content p:first-child { margin-bottom: 0.3rem; }
+  .tech-stack { gap: 0.3rem; margin-top: 0.6rem; }
+  .tech-stack span { font-size: 0.6rem; padding: 0.3rem 0.5rem; }
+  
+  /* Work Experience - more compact */
+  .experience-card { padding: 12px; margin-top: 0.3rem; }
+  .experience-entry { margin-bottom: 0.8rem; }
+  .experience-entry h3 { font-size: 0.9rem; margin-bottom: 0.2rem; }
+  .experience-entry .experience-meta { font-size: 0.7rem; margin-bottom: 0.3rem; }
+  .experience-entry p, .experience-entry li { 
+    font-size: 0.75rem; 
+    line-height: 1.35;
+    margin-bottom: 0.25rem;
+  }
+  .experience-entry ul { margin: 0.3rem 0; padding-left: 1rem; }
+  
+  /* Education section */
+  .education-section { padding: 0.6rem; }
+  .education-item .degree { font-size: 0.75rem; }
+  .education-item .school, .education-item .duration { font-size: 0.68rem; }
+  
+  /* Featured Game - compact */
+  .game-card { padding: 12px; margin-top: 0.3rem; }
+  .game-info h3 { font-size: 0.95rem; margin-bottom: 0.3rem; }
+  .game-info p { font-size: 0.75rem; line-height: 1.35; }
+  .control-info span { font-size: 0.6rem; padding: 0.2rem 0.4rem; }
+  .download-btn { font-size: 0.8rem; padding: 0.5rem 0.8rem; }
+  
+  /* General content wrapper */
+  .content-wrapper { padding: 0 0.7rem; }
+  .home-container { padding-top: 6rem; }
+  
+  /* Reduce gaps between sections */
+  section { margin-bottom: 1.5rem; }
+  section h2 { font-size: 1.1rem; margin-bottom: 0.6rem; }
 }

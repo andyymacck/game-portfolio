@@ -312,6 +312,90 @@
   box-shadow: 0 5px 15px rgba(0, 186, 255, 0.3);
 }
 
+/* ===== SOCIAL MEDIA LINKS ===== */
+
+.social-links {
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
+  margin-top: 1rem;
+  padding-top: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.social-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  background: rgba(0, 0, 0, 0.7);
+  border: 2px solid #505050;
+  border-radius: 4px;
+  color: #ffffff;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 
+    0 4px 8px rgba(0, 0, 0, 0.4),
+    0 2px 4px rgba(0, 0, 0, 0.6),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.social-link::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 186, 255, 0.1);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.social-link:hover {
+  border-color: #00baff;
+  color: #00baff;
+  transform: translateY(-5px);
+  box-shadow: 
+    0 8px 25px rgba(0, 186, 255, 0.4),
+    0 4px 12px rgba(0, 0, 0, 0.6),
+    inset 0 1px 0 rgba(0, 186, 255, 0.3);
+}
+
+.social-link:hover::before {
+  opacity: 1;
+}
+
+.social-link svg {
+  width: 24px;
+  height: 24px;
+  position: relative;
+  z-index: 1;
+  transition: transform 0.3s ease;
+}
+
+.social-link:hover svg {
+  transform: scale(1.1);
+}
+
+.social-link.linkedin:hover {
+  border-color: #0077b5;
+  color: #0077b5;
+  box-shadow: 
+    0 8px 25px rgba(0, 119, 181, 0.4),
+    0 4px 12px rgba(0, 0, 0, 0.6),
+    inset 0 1px 0 rgba(0, 119, 181, 0.3);
+}
+
+.social-link.github:hover {
+  border-color: #333;
+  color: #333;
+  box-shadow: 
+    0 8px 25px rgba(51, 51, 51, 0.4),
+    0 4px 12px rgba(0, 0, 0, 0.6),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
 /* ===== SUCCESS/ERROR MESSAGES ===== */
 
 .form-message {
@@ -343,12 +427,35 @@
   .contact-link { width: 100%; max-width: 250px; justify-content: center; }
   .form-group input,
   .form-group textarea { font-size: 16px; } /* Prevents zoom on iOS */
+  
+  .social-links {
+    gap: 1rem;
+  }
+  
+  .social-link {
+    width: 44px;
+    height: 44px;
+  }
 }
 
 @media (max-width: 480px) {
   .contact-card { padding: 10px; }
   .contact-card h2 { font-size: 0.9rem; }
   .submit-btn { padding: 9px 18px; font-size: 0.85rem; }
+  
+  .social-links {
+    gap: 0.75rem;
+  }
+  
+  .social-link {
+    width: 40px;
+    height: 40px;
+  }
+  
+  .social-link svg {
+    width: 20px;
+    height: 20px;
+  }
 }
 
 /* Enable animations only after component sets .ready to reduce initial flicker */
