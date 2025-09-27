@@ -23,6 +23,9 @@ const Home = () => {
   const [showS3, setShowS3] = React.useState(false);
   const s3VideoRef = React.useRef(null);
   const s3PreviewRef = React.useRef(null);
+  const [showS4, setShowS4] = React.useState(false);
+  const s4VideoRef = React.useRef(null);
+  const s4PreviewRef = React.useRef(null);
   // PDF file sizes + existence flags (lazy HEAD fetch)
   const [s1GddSize, setS1GddSize] = React.useState(null);
   const [s2GddSize, setS2GddSize] = React.useState(null);
@@ -109,6 +112,19 @@ const Home = () => {
     } catch {}
   }, []);
 
+  const closeS4Preview = React.useCallback((playSound = true) => {
+    if (playSound) SFX.play('close');
+    setShowS4(false);
+    setActiveSlice(null);
+    try {
+      if (s4VideoRef.current) {
+        s4VideoRef.current.pause();
+        s4VideoRef.current.currentTime = 0;
+      }
+      s4PreviewRef.current?.classList.remove('crt-boot','chroma-bleed');
+    } catch {}
+  }, []);
+
   // Global ESC handler: close any open video modals and Featured Game
   React.useEffect(() => {
     const onKey = (e) => {
@@ -126,6 +142,7 @@ const Home = () => {
     closeS1Preview();
     closeS2Preview();
     closeS3Preview();
+    closeS4Preview();
   // Close global portal video if open
   if (portal.open) setPortal({ open: false, src: '', poster: '' });
       // Restore body state
@@ -135,7 +152,7 @@ const Home = () => {
     };
     document.addEventListener('keydown', onKey);
     return () => document.removeEventListener('keydown', onKey);
-  }, [closeFeaturedGame, closeS1Preview, closeS2Preview, closeS3Preview, portal.open]);
+  }, [closeFeaturedGame, closeS1Preview, closeS2Preview, closeS3Preview, closeS4Preview, portal.open]);
 
   // Click-outside handler: clicking the dark overlay closes any open slice modal
   React.useEffect(() => {
@@ -155,10 +172,11 @@ const Home = () => {
       if (showS1 && s1PreviewRef.current && !s1PreviewRef.current.contains(target)) closeS1Preview();
       if (showS2 && s2PreviewRef.current && !s2PreviewRef.current.contains(target)) closeS2Preview();
       if (showS3 && s3PreviewRef.current && !s3PreviewRef.current.contains(target)) closeS3Preview();
+      if (showS4 && s4PreviewRef.current && !s4PreviewRef.current.contains(target)) closeS4Preview();
     };
     document.addEventListener('mousedown', onMouseDown);
     return () => document.removeEventListener('mousedown', onMouseDown);
-  }, [showS1, showS2, showS3, closeS1Preview, closeS2Preview, closeS3Preview]);
+  }, [showS1, showS2, showS3, showS4, closeS1Preview, closeS2Preview, closeS3Preview, closeS4Preview]);
   // Fetch PDF sizes for slice GDDs (non-blocking) + detect missing
   React.useEffect(() => {
     const fetchSize = (url, setSize, setExists) => {
@@ -718,6 +736,203 @@ MovementOffsetYaw = UKismetMathLibrary::NormalizedDeltaRotator(MovementRotation,
                       {renderPdfLink(assets.slices.s1.gdd, 'View Slice 1 GDD', s1GddSize, s1PdfExists, 'slice1')}
                     </div>
                     {/* Markdown toggle removed */}
+                </div>
+              </details>
+            </div>
+            {/* Slice 4: Unity Cube Minigame */}
+            <div className={`slice ${activeSlice === 's4' ? 'activating' : ''}`}>
+              <div ref={s4PreviewRef} className={`preview-container ${showS4 ? 'show-game' : ''}`}>
+                <div className="thumbnail-view">
+                  {/* Reuse featured thumb if no dedicated image; or simple stylized tile */}
+                  <div className="game-thumbnail" style={{
+                    width:'100%',height:'200px',borderRadius:'8px',
+                    background:'linear-gradient(135deg,#e6e6e6,#cfcfcf)',
+                    display:'flex',alignItems:'center',justifyContent:'center',
+                    color:'#222',fontWeight:700,letterSpacing:'1px',
+                    textShadow:'0 1px 0 #fff'
+                  }}>
+                    UNITY CUBE MINIGAME
+                  </div>
+                  <button
+                    className="play-preview-btn minimal"
+                    aria-label="Play Unity Cube Minigame"
+                    onMouseOver={() => SFX.play('hover')}
+                    onClick={() => {
+                      SFX.play('open');
+                      setActiveSlice('s4');
+                      closeFeaturedGame();
+                      closeOthers('');
+                      if (portal.open) setPortal({ open: false, src: '', poster: '' });
+                      setShowS4(true);
+                      setTimeout(() => { bootFX(s4PreviewRef.current); try { s4VideoRef.current && s4VideoRef.current.play(); } catch {} }, 30);
+                    }}
+                  >
+                    <span className="play-icon">▶</span>
+                  </button>
+                </div>
+                <div className="game-view">
+                  <button
+                    className="close-btn"
+                    aria-label="Close Unity Cube Minigame"
+                    onMouseOver={() => SFX.play('hover')}
+                    onClick={() => closeS4Preview()}
+                  >
+                    ×
+                  </button>
+                  <video
+                    ref={s4VideoRef}
+                    className="game-frame"
+                    src={assets.slices.s4.video}
+                    poster={assets.featured.thumb}
+                    controls
+                    playsInline
+                    preload="metadata"
+                    onPlay={() => bootFX(s4PreviewRef.current)}
+                    onSeeked={() => bootFX(s4PreviewRef.current)}
+                  />
+                </div>
+              </div>
+              <h3>Unity Cube Minigame — Color Memory</h3>
+              <p className="slice-description">
+                A fast, memory-based “find the color” minigame. Cubes briefly reveal distinct colors, shuffle with arced cup-game swaps, then turn white.
+                After the shuffle, pick the original target cube from memory. Clean runtime UI, subtle VFX/SFX, pause, and hint.
+              </p>
+              <details
+                className="slice-details"
+                open={openSliceDetails === 's4'}
+                onToggle={(e) => {
+                  if (e.target.open) {
+                    setOpenSliceDetails('s4');
+                  } else if (openSliceDetails === 's4') {
+                    setOpenSliceDetails(null);
+                  }
+                  SFX.play(e.target.open ? 'click' : 'click-soft');
+                }}
+              >
+                <summary>Read More</summary>
+                <div>
+                  <h4>Interesting Features</h4>
+                  <ul>
+                    <li>Per-round color assignment and preview-to-hide flow</li>
+                    <li>Cup-game shuffle with smooth arcs</li>
+                    <li>Target selection with delayed pulse to avoid spoilers</li>
+                    <li>Click handling, scoring with streak bonus</li>
+                    <li>Minimal inspector setup: UI is built at runtime</li>
+                    <li>Material-safe, emission-based cube feedback</li>
+                    <li>Clean input gating and lightweight VFX/SFX hooks</li>
+                  </ul>
+                  <h4>Per‑round color assignment</h4>
+                  <pre><code>{`private void AssignRoundColors() {
+  Color[] palette = { Color.red, new Color(1f,0.5f,0f), Color.yellow, Color.green, Color.cyan, Color.blue, new Color(0.5f,0f,1f), Color.magenta, Color.white };
+  // Shuffle palette
+  for (int i = 0; i < palette.Length; i++) {
+    int j = Random.Range(i, palette.Length);
+    (palette[i], palette[j]) = (palette[j], palette[i]);
+  }
+  int idx = 0;
+  foreach (var cube in subCubes) {
+    var handler = cube.GetComponent<CubeColorHandler>();
+    if (handler == null) continue;
+    var c = idx < palette.Length ? palette[idx++] : Random.ColorHSV(0f,1f,0.8f,1f,0.8f,1f);
+    handler.SetOriginalColor(c);   // sets stored original + visible color
+    handler.StopPulse();
+    roundColorMap[cube] = c;       // keep memory mapping for the round
+  }
+}`}</code></pre>
+                  <h4>Pre‑round preview → hide → shuffle</h4>
+                  <pre><code>{`private System.Collections.IEnumerator PreRoundCountdown(int seconds) {
+  SetAllCubesToOriginalImmediate();
+  for (int i = seconds; i > 0; i--) { /* ... */ }
+  if (revealHoldSeconds > 0f) {
+    SetAllCubesToOriginalImmediate();
+    yield return new WaitForSeconds(revealHoldSeconds);
+  }
+  SetAllCubesVisibleColor(Color.white);
+  yield return StartCoroutine(ShuffleCubes());
+  ShowStartOverlay(); yield return new WaitForSeconds(0.6f); HideStartOverlay();
+  BeginActivePhase();
+}`}</code></pre>
+                  <h4>Shuffle with vertical arcs</h4>
+                  <pre><code>{`private System.Collections.IEnumerator ShuffleCubes() {
+  int swaps = Mathf.Clamp(subCubes.Length * 2, 4, 24);
+  for (int s = 0; s < swaps; s++) {
+    int a = Random.Range(0, subCubes.Length), b = Random.Range(0, subCubes.Length);
+    if (a == b) { s--; continue; }
+    var ta = subCubes[a].transform; var tb = subCubes[b].transform;
+    yield return StartCoroutine(SwapArc(ta, tb, ta.position, tb.position, 0.6f, 0.35f));
+    yield return new WaitForSeconds(0.05f);
+  }
+}`}</code></pre>
+                  <pre><code>{`private System.Collections.IEnumerator SwapArc(Transform ta, Transform tb, Vector3 pa, Vector3 pb, float height, float duration) {
+  float t = 0f;
+  while (t < duration) {
+    t += Time.deltaTime;
+    float e = Mathf.SmoothStep(0f, 1f, t / duration);
+    var la = Vector3.Lerp(pa, pb, e);
+    var lb = Vector3.Lerp(pb, pa, e);
+    float y = Mathf.Sin(e * Mathf.PI) * height;
+    la.y = Mathf.Lerp(pa.y, pb.y, e) + y;
+    lb.y = Mathf.Lerp(pb.y, pa.y, e) + y;
+    ta.position = la; tb.position = lb; yield return null;
+  }
+  ta.position = pb; tb.position = pa;
+}`}</code></pre>
+                  <h4>Target selection and delayed highlight</h4>
+                  <pre><code>{`public void StartNewRound() {
+  AssignRoundColors();
+  SetAllCubesToOriginalImmediate();
+  targetSubCube = subCubes[Random.Range(0, subCubes.Length)];
+  targetColor = targetSubCube.GetComponent<CubeColorHandler>().GetOriginalColor();
+  // no pulse yet
+}`}</code></pre>
+                  <pre><code>{`private void BeginActivePhase() {
+  IsGameActive = true;
+  var ch = targetSubCube.GetComponent<CubeColorHandler>();
+  if (ch != null) ch.StartPulse(targetColor * 0.7f, 1.2f, 3f);
+}`}</code></pre>
+                  <h4>Click handling + scoring with streak</h4>
+                  <pre><code>{`public void TrySelect(SubCube clicked) {
+  if (!IsGameActive || clicked == null || isPaused) return;
+  bool correct = clicked == targetSubCube;
+  if (correct) {
+    IsGameActive = false;
+    score += 1 + streak; streak++;
+    scoreText.text = $"Score: {score}";
+    PlayOneShot(successSfx);
+    if (vfx) foreach (var c in subCubes) vfx.PlayConfetti(c.transform.position + Vector3.up * 0.5f);
+    ShowWinOverlay(); StartCoroutine(CelebrateThenNextRound());
+  } else {
+    streak = 0; timeRemaining = Mathf.Max(0f, timeRemaining - wrongPenaltySeconds);
+    FlashTMP(timerText, Color.red, 0.2f);
+    if (vfx) vfx.PlayErrorBurst(clicked.transform.position + Vector3.up * 0.3f);
+  }
+}`}</code></pre>
+                  <h4>Runtime HUD build (inspector-optional)</h4>
+                  <pre><code>{`private void EnsureHudBuilt() {
+  if (targetColorText != null && timerText != null && scoreText != null) { hudCanvas = targetColorText.GetComponentInParent<Canvas>(); return; }
+  var hudGo = new GameObject("HUD");
+  var canvas = hudGo.AddComponent<Canvas>(); canvas.renderMode = RenderMode.ScreenSpaceOverlay;
+  hudGo.AddComponent<CanvasScaler>(); hudGo.AddComponent<GraphicRaycaster>();
+  targetColorText = CreateHudTMP(hudGo.transform as RectTransform, "TargetText", "Find the cube:", new Vector2(0.5f,1f), new Vector2(0.5f,1f), new Vector2(0,-30), 36, Color.white, TextAlignmentOptions.Center);
+  timerText       = CreateHudTMP(hudGo.transform as RectTransform, "TimerText",  "Time: 0",        new Vector2(1f,1f),  new Vector2(1f,1f),  new Vector2(-90,-30), 32, Color.white, TextAlignmentOptions.Right);
+  scoreText       = CreateHudTMP(hudGo.transform as RectTransform, "ScoreText",  "Score: 0",       new Vector2(0f,1f),  new Vector2(0f,1f),  new Vector2(90,-30),  32, Color.white, TextAlignmentOptions.Left);
+}`}</code></pre>
+                  <h4>Cube material emission pulse</h4>
+                  <pre><code>{`public class CubeColorHandler : MonoBehaviour {
+  public void SetOriginalColor(Color c) { EnsureMat(); originalColor = c; mat.color = c; }
+  public void SetVisibleColor(Color c)  { EnsureMat(); mat.color = c; }
+  public void StartPulse(Color pulseColor, float maxIntensity = 1.5f, float speed = 4f) {
+    StopPulse(); pulseRoutine = StartCoroutine(PulseEmission(pulseColor, maxIntensity, speed));
+  }
+  private IEnumerator PulseEmission(Color pulseColor, float maxIntensity, float speed) {
+    EnsureMat(); mat.EnableKeyword("_EMISSION");
+    while (true) {
+      float t = (Mathf.Sin(Time.time * speed) + 1f) * 0.5f;
+      mat.SetColor("_EmissionColor", pulseColor * Mathf.Lerp(0.1f, maxIntensity, t));
+      yield return null;
+    }
+  }
+}`}</code></pre>
                 </div>
               </details>
             </div>

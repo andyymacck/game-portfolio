@@ -20,6 +20,10 @@ export default {
   thumb: pub('unreal/UnrealProj.JPG'),
       // Re-enabled after compression
       video: pub('unreal/ModernPlatformer.mp4')
+    },
+    s4: {
+      // Placeholder thumbnail not required; the card renders a styled div
+      video: pub('unity/UnityCubeMiniGame.mp4')
     }
   },
   featured: {

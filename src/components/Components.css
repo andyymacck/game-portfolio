@@ -1427,6 +1427,13 @@ body.modal-open .portfolio-container { filter: none !important; }
   overflow: hidden; /* clip overlays and media to rounded corners */
 }
 
+/* Calibrate media grid size to visually match home grid (compensate for DPR/blend perception) */
+.video-thumbnail,
+.preview-container,
+.video-frame {
+  --grid-size-media: calc(var(--grid-size) * 0.42); /* slightly smaller cells for more pixelated feel (~5px when base is 12px) */
+}
+
 @keyframes crtFlickerSoft { 0%, 98%, 100% { opacity: 1; } 99% { opacity: 0.97; } }
 
 /* Main composite overlay */
@@ -1526,18 +1533,24 @@ body.modal-open .portfolio-container { filter: none !important; }
   pointer-events: none;
   z-index: 2; /* below ::after scanlines */
   background:
-    /* Match App.css: noise + 20px ordered grid */
-    url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.6' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%' height='100%' filter='url(%23noise)' opacity='0.15'/%3E%3C/svg%3E"),
-  linear-gradient(0deg, rgba(0, 0, 0, 0.02) 1px, transparent 1px),
-  linear-gradient(90deg, rgba(0, 0, 0, 0.02) 1px, transparent 1px),
+    /* Dual light/dark grid like home background */
+    linear-gradient(0deg, rgba(255, 255, 255, 0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.035) 1px, transparent 1px),
+    linear-gradient(0deg, rgba(0, 0, 0, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 0, 0, 0.05) 1px, transparent 1px),
+    /* Existing vignette + curvature masks */
     radial-gradient(circle at center, rgba(0,0,0,0) 65%, rgba(0,0,0,0.14) 100%),
-    /* Corner darkening to imply curvature */
-    radial-gradient(200px 160px at top left, rgba(0,0,0,0.18), rgba(0,0,0,0) 70%),
-    radial-gradient(200px 160px at top right, rgba(0,0,0,0.18), rgba(0,0,0,0) 70%),
-    radial-gradient(200px 160px at bottom left, rgba(0,0,0,0.18), rgba(0,0,0,0) 70%),
-    radial-gradient(200px 160px at bottom right, rgba(0,0,0,0.18), rgba(0,0,0,0) 70%);
-  background-size: 100% 100%, 6px 6px, 6px 6px, auto, auto, auto, auto, auto;
-  mix-blend-mode: multiply;
+    radial-gradient(200px 160px at top left, rgba(0,0,0,0.16), rgba(0,0,0,0) 70%),
+    radial-gradient(200px 160px at top right, rgba(0,0,0,0.16), rgba(0,0,0,0) 70%),
+    radial-gradient(200px 160px at bottom left, rgba(0,0,0,0.16), rgba(0,0,0,0) 70%),
+    radial-gradient(200px 160px at bottom right, rgba(0,0,0,0.16), rgba(0,0,0,0) 70%);
+  background-size: var(--grid-size-media) var(--grid-size-media), var(--grid-size-media) var(--grid-size-media), var(--grid-size-media) var(--grid-size-media), var(--grid-size-media) var(--grid-size-media), auto, auto, auto, auto, auto;
+  background-position: 0 0, 0 0, 0 0, 0 0, center, center, center, center, center;
+  mix-blend-mode: luminosity;
+  opacity: 0.18; /* fainter grid on live surface */
+  image-rendering: pixelated; /* crisper pixel feel */
+  animation: pixelGridFlicker 4s steps(4) infinite; /* faster, more discrete pixel-like shimmer */
+  will-change: opacity;
 }
 
 /* Ensure the game-view forms its own stacking context and the media is under the overlay */
@@ -1590,24 +1603,40 @@ body.modal-open .portfolio-container { filter: none !important; }
   pointer-events: none;
   z-index: 2; /* above media, under ::after composite */
   background:
-    /* Match App.css: noise + 20px ordered grid */
-    url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.6' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%' height='100%' filter='url(%23noise)' opacity='0.15'/%3E%3C/svg%3E"),
-  linear-gradient(0deg, rgba(0, 0, 0, 0.02) 1px, transparent 1px),
-  linear-gradient(90deg, rgba(0, 0, 0, 0.02) 1px, transparent 1px),
+    /* Dual light/dark grid like home background */
+    linear-gradient(0deg, rgba(255, 255, 255, 0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.035) 1px, transparent 1px),
+    linear-gradient(0deg, rgba(0, 0, 0, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 0, 0, 0.05) 1px, transparent 1px),
     /* Existing vignette + curvature masks */
     radial-gradient(circle at center, rgba(0,0,0,0) 65%, rgba(0,0,0,0.14) 100%),
     radial-gradient(200px 160px at top left, rgba(0,0,0,0.16), rgba(0,0,0,0) 70%),
     radial-gradient(200px 160px at top right, rgba(0,0,0,0.16), rgba(0,0,0,0) 70%),
     radial-gradient(200px 160px at bottom left, rgba(0,0,0,0.16), rgba(0,0,0,0) 70%),
     radial-gradient(200px 160px at bottom right, rgba(0,0,0,0.16), rgba(0,0,0,0) 70%);
-  background-size: 100% 100%, 6px 6px, 6px 6px, auto, auto, auto, auto, auto;
-  mix-blend-mode: multiply;
+  background-size: var(--grid-size-media) var(--grid-size-media), var(--grid-size-media) var(--grid-size-media), var(--grid-size-media) var(--grid-size-media), var(--grid-size-media) var(--grid-size-media), auto, auto, auto, auto, auto;
+  background-position: 0 0, 0 0, 0 0, 0 0, center, center, center, center, center;
+  mix-blend-mode: luminosity;
+  opacity: 0.16; /* fainter grid */
+  image-rendering: pixelated;
+  animation: pixelGridFlicker 4s steps(4) infinite;
+  will-change: opacity;
 }
 
 /* Chromatic edge fringe (very subtle) */
 .video-thumbnail .crt-fringe,
 .preview-container .thumbnail-view .crt-fringe,
 .video-frame .crt-fringe { display:none; }
+
+/* ===== Featured Game: ensure grid is visible over the preview ===== */
+/* Increase grid strength slightly and tone down CRT overlay so the grid reads clearly */
+.featured-game .preview-container .thumbnail-view::before,
+.featured-game .preview-container .game-view::before {
+  opacity: 0.26; /* was 0.16/0.18 globally */
+}
+.featured-game .preview-container .game-view::after {
+  opacity: 0.38; /* was 0.52 globally; reduce washout so grid below is visible */
+}
 
 /* Optional stronger effect when hovering (kept minimal to avoid flicker) */
 .video-thumbnail:hover::after {
@@ -1618,6 +1647,10 @@ body.modal-open .portfolio-container { filter: none !important; }
   .video-thumbnail::after,
   .preview-container .thumbnail-view::after,
   .video-frame::after { animation: none; }
+  .video-thumbnail::before,
+  .preview-container .thumbnail-view::before,
+  .video-frame::before,
+  .preview-container .game-view::before { animation: none !important; }
 }
 
 @keyframes crtNoiseShift {
@@ -1626,6 +1659,14 @@ body.modal-open .portfolio-container { filter: none !important; }
   50% { background-position: 0 0, 0 1px, 12px 8px, -8px 0, 0 0; }
   75% { background-position: 0 0, 0 3px, 18px 12px, -12px 0, 0 0; }
   100% { background-position: 0 0, 0 0, 24px 16px, -16px 0, 0 0; }
+}
+
+/* Subtle pixel-like flicker for the grid overlay */
+@keyframes pixelGridFlicker {
+  0%, 100% { opacity: 0.16; }
+  44% { opacity: 0.17; }
+  50% { opacity: 0.20; }
+  56% { opacity: 0.17; }
 }
 
 /* Ensure underlying image/video is visible and layered below overlays */
@@ -1647,13 +1688,19 @@ body.modal-open .portfolio-container { filter: none !important; }
   pointer-events: none;
   z-index: 2;
   background:
-    /* Match App.css: noise + 20px ordered grid */
-    url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.6' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%' height='100%' filter='url(%23noise)' opacity='0.15'/%3E%3C/svg%3E"),
-  linear-gradient(0deg, rgba(0, 0, 0, 0.02) 1px, transparent 1px),
-  linear-gradient(90deg, rgba(0, 0, 0, 0.02) 1px, transparent 1px),
+    /* Dual light/dark grid like home background */
+    linear-gradient(0deg, rgba(255, 255, 255, 0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.035) 1px, transparent 1px),
+    linear-gradient(0deg, rgba(0, 0, 0, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 0, 0, 0.05) 1px, transparent 1px),
     radial-gradient(circle at center, rgba(0,0,0,0) 65%, rgba(0,0,0,0.14) 100%);
-  background-size: 100% 100%, 6px 6px, 6px 6px, auto;
-  mix-blend-mode: multiply;
+  background-size: var(--grid-size-media) var(--grid-size-media), var(--grid-size-media) var(--grid-size-media), var(--grid-size-media) var(--grid-size-media), var(--grid-size-media) var(--grid-size-media), auto;
+  background-position: 0 0, 0 0, 0 0, 0 0, center;
+  mix-blend-mode: luminosity;
+  opacity: 0.16;
+  image-rendering: pixelated;
+  animation: pixelGridFlicker 4s steps(4) infinite;
+  will-change: opacity;
 }
 body.modal-open .video-thumbnail * {
   transform: none !important;

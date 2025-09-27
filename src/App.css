@@ -58,6 +58,14 @@
   box-sizing: border-box;
 }
 
+/* Shared grid sizing across the app (home background + media overlays) */
+:root {
+  /* Base grid cell size used on the home background */
+  --grid-size: 12px;
+  /* Grid cell size used on thumbnails/previews/videos; keep equal to --grid-size by default. */
+  --grid-size-media: var(--grid-size);
+}
+
 html, body {
   margin: 0;
   padding: 0;
@@ -128,6 +136,7 @@ body.native-text-cursor { cursor: text !important; }
   background-position: 0 0;
   background-size: 20px 20px;
   will-change: transform; /* Hint browser for optimization */
+  contain: layout paint size style; /* isolate painting & layout */
 }
 .retro-cursor.hidden { opacity: 0; }
 .retro-cursor.arrow { 
@@ -165,19 +174,31 @@ body.native-text-cursor { cursor: text !important; }
   content: '';
   position: fixed;
   inset: 0;
-  background: 
-    url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.6' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%' height='100%' filter='url(%23noise)' opacity='0.15'/%3E%3C/svg%3E"),
+    display: block; /* override the generic display:none on ::before */
+  background:
+    linear-gradient(0deg, rgba(255, 255, 255, 0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.035) 1px, transparent 1px),
     linear-gradient(0deg, rgba(0, 0, 0, 0.05) 1px, transparent 1px),
     linear-gradient(90deg, rgba(0, 0, 0, 0.05) 1px, transparent 1px);
-  background-size: 100% 100%, 20px 20px, 20px 20px;
+  /* Larger cells for stronger pixelation */
+  background-size: var(--grid-size) var(--grid-size), var(--grid-size) var(--grid-size), var(--grid-size) var(--grid-size), var(--grid-size) var(--grid-size);
+  background-repeat: repeat, repeat, repeat, repeat;
+  background-position: 0 0, 0 0, 0 0, 0 0; /* keep grid origin consistent */
   pointer-events: none;
-  opacity: 0.7;
-  z-index: 0;
+  opacity: 0.28; /* make grid a bit more faint on desktop */
+  mix-blend-mode: luminosity; /* affect luminance only */
+  image-rendering: pixelated; /* crisper grid */
+  z-index: 2; /* above vignettes but below content */
 }
 
 /* No global CRT noise overlay by default */
 .portfolio-container::before {
   display: none;
+}
+
+/* Re-enable the pixel grid overlay on Home specifically (overrides the generic hide above) */
+.portfolio-container:has(.home-container)::before {
+  display: block !important;
 }
 
 /* No global scanlines by default */
@@ -219,9 +240,10 @@ body.native-text-cursor { cursor: text !important; }
   
   /* Adjust texture opacity for mobile screens */
   .portfolio-container:has(.home-container)::before {
-    opacity: 0.75;
-    /* Slightly stronger contrast for mobile */
-    filter: contrast(1.03) saturate(0.92);
+    opacity: 0.32; /* slightly stronger than desktop but still faint */
+    /* Clamp chroma and keep luminance-only blend */
+    filter: saturate(0) contrast(1.02);
+    mix-blend-mode: luminosity;
   }
 }
 

@@ -19,6 +19,8 @@ export default function CustomCursor() {
   const pos = useRef({ x: 0, y: 0 });
   const cur = useRef({ x: 0, y: 0 });
   const lastInteractive = useRef(0);
+  const variantRef = useRef('arrow');
+  const hiddenRef = useRef(false);
   const [variant, setVariant] = useState('arrow'); // 'arrow' | 'hand'
   const [hidden, setHidden] = useState(false);
 
@@ -29,13 +31,18 @@ export default function CustomCursor() {
 
   useEffect(() => {
     let rafId = null;
-    let lastElementCheck = 0;
+    let lastInteractiveCheck = 0;
     let cachedElement = null;
+    const INTERACTIVE_CHECK_MS = 50; // reduce DOM matching frequency
+    const prefersReducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     
     const onMove = (e) => {
       // If a modal is open, freeze the custom cursor to reduce repaint churn
       if (document.body.classList.contains('modal-open')) {
-        setHidden(true);
+        if (!hiddenRef.current) {
+          hiddenRef.current = true;
+          setHidden(true);
+        }
         if (anim.current) { cancelAnimationFrame(anim.current); anim.current = null; }
         return;
       }
@@ -43,11 +50,12 @@ export default function CustomCursor() {
       pos.current.x = e.clientX;
       pos.current.y = e.clientY;
       
-      // Throttle element detection to reduce DOM queries
+      // Throttle interactive detection; prefer event target to avoid elementFromPoint
       const now = performance.now();
-      if (now - lastElementCheck > 16) { // ~60fps throttling
-        lastElementCheck = now;
-        cachedElement = document.elementFromPoint(e.clientX, e.clientY);
+      if (now - lastInteractiveCheck > INTERACTIVE_CHECK_MS) {
+        lastInteractiveCheck = now;
+        const evtTarget = (e.composedPath && e.composedPath()[0]) || e.target || cachedElement;
+        cachedElement = evtTarget && evtTarget.nodeType === 1 ? evtTarget : cachedElement;
       }
       
       if (!anim.current) {
@@ -57,8 +65,8 @@ export default function CustomCursor() {
           const dy = pos.current.y - cur.current.y;
           const dist = Math.hypot(dx, dy);
           
-          // Reduced easing complexity
-          const ease = dist > 50 ? 0.25 : dist > 20 ? 0.15 : 0.08;
+          // Snappier easing; no smoothing if user prefers reduced motion
+          const ease = prefersReducedMotion ? 0.5 : (dist > 50 ? 0.35 : dist > 20 ? 0.22 : 0.12);
           
           cur.current.x += dx * ease;
           cur.current.y += dy * ease;
@@ -81,39 +89,55 @@ export default function CustomCursor() {
       if (!cachedElement) return;
       
       // Show native cursor for text fields and hide custom
-      if (cachedElement.closest(SELECTOR_NATIVE_TEXT)) {
+      if (cachedElement.closest && cachedElement.closest(SELECTOR_NATIVE_TEXT)) {
         document.body.classList.add('native-text-cursor');
-        setHidden(true);
+        if (!hiddenRef.current) {
+          hiddenRef.current = true;
+          setHidden(true);
+        }
         return;
       } else {
         document.body.classList.remove('native-text-cursor');
-        setHidden(false);
+        if (hiddenRef.current) {
+          hiddenRef.current = false;
+          setHidden(false);
+        }
       }
 
       // Hand over interactives with reduced checking frequency
-      const overInteractive = !!cachedElement.closest(SELECTOR_INTERACTIVE);
+      const overInteractive = !!(cachedElement.closest && cachedElement.closest(SELECTOR_INTERACTIVE));
       if (overInteractive) lastInteractive.current = now;
       
       // Simplified variant switching
-      if (now - lastInteractive.current < 100) {
-        setVariant('hand');
-      } else {
-        setVariant('arrow');
+      const nextVariant = (now - lastInteractive.current < 120) ? 'hand' : 'arrow';
+      if (variantRef.current !== nextVariant) {
+        variantRef.current = nextVariant;
+        setVariant(nextVariant);
       }
     };
 
-    const onLeave = () => setHidden(true);
+    const onLeave = () => {
+      if (!hiddenRef.current) {
+        hiddenRef.current = true;
+        setHidden(true);
+      }
+    };
     const onEnter = () => {
       // If modal is open, keep it hidden
-      if (document.body.classList.contains('modal-open')) { setHidden(true); return; }
-      setHidden(false);
+      if (document.body.classList.contains('modal-open')) { 
+        if (!hiddenRef.current) { hiddenRef.current = true; setHidden(true); }
+        return; 
+      }
+      if (hiddenRef.current) { hiddenRef.current = false; setHidden(false); }
     };
 
-    window.addEventListener('mousemove', onMove, { passive: true });
+    // Use pointer events when available for better performance
+    const eventName = window.PointerEvent ? 'pointermove' : 'mousemove';
+    window.addEventListener(eventName, onMove, { passive: true });
     window.addEventListener('mouseleave', onLeave);
     window.addEventListener('mouseenter', onEnter);
     return () => {
-      window.removeEventListener('mousemove', onMove);
+      window.removeEventListener(eventName, onMove);
       window.removeEventListener('mouseleave', onLeave);
       window.removeEventListener('mouseenter', onEnter);
       if (anim.current) cancelAnimationFrame(anim.current);
