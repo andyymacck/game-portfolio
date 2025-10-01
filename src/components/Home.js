@@ -794,7 +794,7 @@ MovementOffsetYaw = UKismetMathLibrary::NormalizedDeltaRotator(MovementRotation,
               </div>
               <h3>Unity Cube Minigame — Color Memory</h3>
               <p className="slice-description">
-                A fast, memory-based “find the color” minigame. Cubes briefly reveal distinct colors, shuffle with arced cup-game swaps, then turn white.
+                A fast, memory-based “find the color” minigame. Meant to be something like a game within a game simmilar to Mario Party mini games. In this game, cubes briefly reveal distinct colors, shuffle with arced cup-game swaps, then turn white.
                 After the shuffle, pick the original target cube from memory. Clean runtime UI, subtle VFX/SFX, pause, and hint.
               </p>
               <details
@@ -839,6 +839,7 @@ MovementOffsetYaw = UKismetMathLibrary::NormalizedDeltaRotator(MovementRotation,
     roundColorMap[cube] = c;       // keep memory mapping for the round
   }
 }`}</code></pre>
+                  <p>Each round shuffles a vivid palette and assigns colors to cubes, storing both the visible and “original” value. Stopping any prior pulse prevents leftover VFX, and the <code>roundColorMap</code> gives an authoritative source for validation and UI (e.g., showing the target color name).</p>
                   <h4>Pre‑round preview → hide → shuffle</h4>
                   <pre><code>{`private System.Collections.IEnumerator PreRoundCountdown(int seconds) {
   SetAllCubesToOriginalImmediate();
@@ -852,6 +853,7 @@ MovementOffsetYaw = UKismetMathLibrary::NormalizedDeltaRotator(MovementRotation,
   ShowStartOverlay(); yield return new WaitForSeconds(0.6f); HideStartOverlay();
   BeginActivePhase();
 }`}</code></pre>
+                  <p>The round flow is readable and fair: briefly reveal correct colors, hide them to pure white, then shuffle. A short “start” overlay avoids accidental early clicks and makes the start of the guessing phase obvious.</p>
                   <h4>Shuffle with vertical arcs</h4>
                   <pre><code>{`private System.Collections.IEnumerator ShuffleCubes() {
   int swaps = Mathf.Clamp(subCubes.Length * 2, 4, 24);
@@ -863,6 +865,7 @@ MovementOffsetYaw = UKismetMathLibrary::NormalizedDeltaRotator(MovementRotation,
     yield return new WaitForSeconds(0.05f);
   }
 }`}</code></pre>
+                  <p>Swaps pick two indices and perform a visually satisfying cup‑game exchange. The cap on swap count keeps rounds brisk while still challenging short‑term memory.</p>
                   <pre><code>{`private System.Collections.IEnumerator SwapArc(Transform ta, Transform tb, Vector3 pa, Vector3 pb, float height, float duration) {
   float t = 0f;
   while (t < duration) {
@@ -877,6 +880,7 @@ MovementOffsetYaw = UKismetMathLibrary::NormalizedDeltaRotator(MovementRotation,
   }
   ta.position = pb; tb.position = pa;
 }`}</code></pre>
+                  <p><code>SmoothStep</code> eases the horizontal interpolation while a sine wave adds a clean vertical arc. The result is easy to track early, then deliberately confusing at higher shuffle speeds and counts.</p>
                   <h4>Target selection and delayed highlight</h4>
                   <pre><code>{`public void StartNewRound() {
   AssignRoundColors();
@@ -885,11 +889,13 @@ MovementOffsetYaw = UKismetMathLibrary::NormalizedDeltaRotator(MovementRotation,
   targetColor = targetSubCube.GetComponent<CubeColorHandler>().GetOriginalColor();
   // no pulse yet
 }`}</code></pre>
+                  <p>The target cube and its color are chosen upfront from the same authoritative mapping used during assignment, but there’s no highlight yet to avoid biasing the reveal or shuffle phases.</p>
                   <pre><code>{`private void BeginActivePhase() {
   IsGameActive = true;
   var ch = targetSubCube.GetComponent<CubeColorHandler>();
   if (ch != null) ch.StartPulse(targetColor * 0.7f, 1.2f, 3f);
 }`}</code></pre>
+                  <p>Only when guessing begins do we start a low‑intensity emission pulse on the target as an accessible hint. The subdued multiplier preserves difficulty while aiding readability.</p>
                   <h4>Click handling + scoring with streak</h4>
                   <pre><code>{`public void TrySelect(SubCube clicked) {
   if (!IsGameActive || clicked == null || isPaused) return;
@@ -907,6 +913,7 @@ MovementOffsetYaw = UKismetMathLibrary::NormalizedDeltaRotator(MovementRotation,
     if (vfx) vfx.PlayErrorBurst(clicked.transform.position + Vector3.up * 0.3f);
   }
 }`}</code></pre>
+                  <p>Selections are gated by game state to prevent accidental inputs. A light streak bonus rewards consecutive success, with small time penalties and error VFX keeping tension when guesses go wrong.</p>
                   <h4>Runtime HUD build (inspector-optional)</h4>
                   <pre><code>{`private void EnsureHudBuilt() {
   if (targetColorText != null && timerText != null && scoreText != null) { hudCanvas = targetColorText.GetComponentInParent<Canvas>(); return; }
@@ -917,6 +924,7 @@ MovementOffsetYaw = UKismetMathLibrary::NormalizedDeltaRotator(MovementRotation,
   timerText       = CreateHudTMP(hudGo.transform as RectTransform, "TimerText",  "Time: 0",        new Vector2(1f,1f),  new Vector2(1f,1f),  new Vector2(-90,-30), 32, Color.white, TextAlignmentOptions.Right);
   scoreText       = CreateHudTMP(hudGo.transform as RectTransform, "ScoreText",  "Score: 0",       new Vector2(0f,1f),  new Vector2(0f,1f),  new Vector2(90,-30),  32, Color.white, TextAlignmentOptions.Left);
 }`}</code></pre>
+                  <p>The HUD auto‑constructs itself if references are missing, keeping the scene setup minimal. This ensures the minigame is drop‑in friendly and avoids brittle inspector wiring.</p>
                   <h4>Cube material emission pulse</h4>
                   <pre><code>{`public class CubeColorHandler : MonoBehaviour {
   public void SetOriginalColor(Color c) { EnsureMat(); originalColor = c; mat.color = c; }
@@ -933,6 +941,7 @@ MovementOffsetYaw = UKismetMathLibrary::NormalizedDeltaRotator(MovementRotation,
     }
   }
 }`}</code></pre>
+                  <p>Handlers guard material access and drive a sine‑based emission pulse for a retro‑CRT vibe that reads well at a distance. The API also exposes immediate color set functions for reveal/hide phases.</p>
                 </div>
               </details>
             </div>
