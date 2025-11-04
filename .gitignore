@@ -16,3 +16,6 @@ node_modules
 
 # Do not commit build artifacts
 build/
+
+# Ignore local environment file (added)
+.env
