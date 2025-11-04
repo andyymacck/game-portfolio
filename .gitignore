@@ -12,7 +12,6 @@ node_modules/
 *.log
 npm-debug.log*
 yarn-error.log
-node_modules
 
 # Do not commit build artifacts
 build/
