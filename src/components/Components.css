@@ -582,7 +582,7 @@
   margin-bottom: 2rem;
   padding: 1rem;
   border-bottom: 1px solid rgba(0, 186, 255, 0.2);
-  transition: all 0.3s ease;
+  transition: transform var(--transition-base), background var(--transition-base);
   position: relative;
   z-index: 1;
 }
@@ -746,7 +746,7 @@
   margin-bottom: 2rem;
   padding: 1rem;
   border-bottom: 1px solid rgba(0, 186, 255, 0.2);
-  transition: all 0.3s ease;
+  transition: transform var(--transition-base), background var(--transition-base);
   position: relative;
   z-index: 1;
 }
@@ -1148,7 +1148,7 @@ body.modal-open .portfolio-container { filter: none !important; }
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: all 0.3s ease;
+  transition: transform var(--transition-base), background var(--transition-base), color var(--transition-base);
 }
 
 .close-modal:hover {
@@ -1172,7 +1172,7 @@ body.modal-open .portfolio-container { filter: none !important; }
   align-items: center;
   justify-content: center;
   font-size: 1.2rem;
-  transition: all 0.3s ease;
+  transition: transform var(--transition-base), background var(--transition-base);
   z-index: 2;
 }
 
@@ -1219,7 +1219,7 @@ body.modal-open .portfolio-container { filter: none !important; }
   padding: 0.8rem;
   color: #ffffff;
   font-size: 1rem;
-  transition: all 0.3s ease;
+  transition: border-color var(--transition-base), box-shadow var(--transition-base);
 }
 
 .form-group input:focus,
@@ -1242,7 +1242,7 @@ body.modal-open .portfolio-container { filter: none !important; }
   border-radius: 4px;
   font-size: 1.1rem;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: transform var(--transition-base), background var(--transition-base), box-shadow var(--transition-base);
   font-weight: bold;
 }
 
@@ -1344,7 +1344,7 @@ body.modal-open .portfolio-container { filter: none !important; }
   padding: 15px;
   border: 1px solid #505050;
   border-radius: 2px;
-  transition: all 0.3s ease;
+  transition: border-color var(--transition-base), box-shadow var(--transition-base);
 }
 
 .slice-details[open] {
@@ -1409,7 +1409,7 @@ body.modal-open .portfolio-container { filter: none !important; }
   border-radius: 2px;
   background: #232323;
   box-shadow: 0 0 16px #00baff;
-  transition: all 0.3s ease;
+  transition: transform var(--transition-base), box-shadow var(--transition-base), border-color var(--transition-base);
   overflow: hidden;
 }
 
@@ -1666,13 +1666,7 @@ body.modal-open .portfolio-container { filter: none !important; }
   100% { background-position: 0 0, 0 0, 24px 16px, -16px 0, 0 0; }
 }
 
-/* Subtle pixel-like flicker for the grid overlay */
-@keyframes pixelGridFlicker {
-  0%, 100% { opacity: 0.16; }
-  44% { opacity: 0.17; }
-  50% { opacity: 0.20; }
-  56% { opacity: 0.17; }
-}
+/* pixelGridFlicker defined in App.css */
 
 /* Ensure underlying image/video is visible and layered below overlays */
 .thumbnail-view img.game-thumbnail,
@@ -1797,7 +1791,7 @@ body.modal-open .play-overlay { pointer-events: none !important; }
   border-radius: 8px;
   border: 1px solid rgba(0, 212, 255, 0.4);
   text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.8), 0 0 3px rgba(0, 186, 255, 0.4);
-  transition: all 0.3s ease;
+  transition: transform var(--transition-base), background var(--transition-base), box-shadow var(--transition-base), color var(--transition-base);
   box-shadow: 0 0 6px rgba(0, 212, 255, 0.2);
 }
 
@@ -1821,7 +1815,7 @@ body.modal-open .play-overlay { pointer-events: none !important; }
   border-radius: 4px;
   text-decoration: none;
   font-size: 1rem;
-  transition: all 0.3s ease;
+  transition: transform var(--transition-base), background var(--transition-base), box-shadow var(--transition-base);
   text-shadow: 0 0 4px rgba(0, 186, 255, 0.5);
 }
 

@@ -50,6 +50,13 @@
   }
 }
 
+@keyframes pixelGridFlicker {
+  0%, 100% { opacity: 0.16; }
+  44% { opacity: 0.17; }
+  50% { opacity: 0.20; }
+  56% { opacity: 0.17; }
+}
+
 /* ===== GLOBAL LAYOUT ===== */
 
 *, *::before, *::after {
@@ -58,12 +65,51 @@
   box-sizing: border-box;
 }
 
-/* Shared grid sizing across the app (home background + media overlays) */
+/* ===== DESIGN TOKENS ===== */
 :root {
-  /* Base grid cell size used on the home background */
+  /* Grid */
   --grid-size: 12px;
-  /* Grid cell size used on thumbnails/previews/videos; keep equal to --grid-size by default. */
   --grid-size-media: var(--grid-size);
+
+  /* Pixel grid gradients */
+  --pixel-grid:
+    repeating-linear-gradient(0deg, rgba(255,255,255,0.035) 0px, rgba(255,255,255,0.035) 1px, transparent 1px, transparent var(--grid-size)),
+    repeating-linear-gradient(90deg, rgba(255,255,255,0.035) 0px, rgba(255,255,255,0.035) 1px, transparent 1px, transparent var(--grid-size)),
+    repeating-linear-gradient(0deg, rgba(0,0,0,0.05) 0px, rgba(0,0,0,0.05) 1px, transparent 1px, transparent var(--grid-size)),
+    repeating-linear-gradient(90deg, rgba(0,0,0,0.05) 0px, rgba(0,0,0,0.05) 1px, transparent 1px, transparent var(--grid-size));
+
+  --pixel-grid-media:
+    repeating-linear-gradient(0deg, rgba(255,255,255,0.035) 0px, rgba(255,255,255,0.035) 1px, transparent 1px, transparent var(--grid-size-media)),
+    repeating-linear-gradient(90deg, rgba(255,255,255,0.035) 0px, rgba(255,255,255,0.035) 1px, transparent 1px, transparent var(--grid-size-media)),
+    repeating-linear-gradient(0deg, rgba(0,0,0,0.05) 0px, rgba(0,0,0,0.05) 1px, transparent 1px, transparent var(--grid-size-media)),
+    repeating-linear-gradient(90deg, rgba(0,0,0,0.05) 0px, rgba(0,0,0,0.05) 1px, transparent 1px, transparent var(--grid-size-media));
+
+  /* Fonts */
+  --font-pixel: 'Press Start 2P', monospace;
+  --font-body: 'Courier New', monospace;
+
+  /* Colors */
+  --color-overlay-dark: rgba(0,0,0,0.85);
+  --color-danger: rgba(255,82,82,0.9);
+  --color-bg-deep: #1a1a2e;
+  --color-bg-mid: #16213e;
+  --color-bg-surface: #0f3460;
+  --color-accent: #e94560;
+  --color-text-primary: #00ff41;
+  --color-text-dim: rgba(0,255,65,0.7);
+
+  /* Transitions */
+  --transition-fast: 0.2s ease;
+  --transition-base: 0.3s ease;
+  --transition-slow: 0.5s ease;
+
+  /* Z-index scale */
+  --z-base: 1;
+  --z-content: 3;
+  --z-overlay: 10;
+  --z-modal: 100;
+  --z-nav: 1500;
+  --z-cursor: 3000;
 }
 
 html, body {

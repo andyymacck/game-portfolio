@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Andy's Game Portfolio</title>
+    <script>
+      // SPA routing fix for GitHub Pages
+      // Redirects 404s back to index.html with the path encoded as a query param
+      var repo = '/game-portfolio';
+      var path = window.location.pathname.slice(repo.length) || '/';
+      var search = window.location.search.slice(1).replace(/&/g, '~and~');
+      var hash = window.location.hash.slice(1);
+      var redirectUrl = window.location.protocol + '//' +
+        window.location.host + repo + '/' +
+        '?' + encodeURIComponent(path + (search ? '&' + search : '') + (hash ? '#' + hash : ''));
+      window.location.replace(redirectUrl);
+    </script>
+  </head>
+  <body></body>
+</html>
