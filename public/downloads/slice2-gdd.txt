@@ -1,0 +1,257 @@
+Vertical Slice 2 – Game Design Document (Condensed)
+=================================================
+
+Game Design Document: Banana Quest (Working Title)
+
+1. Game Overview
+
+Title: BananaMan - and the quest of the Citrus Cliffs (Working Title)
+
+Genre: 2.5D Platformer / Collectathon
+
+Platforms: PC, Nintendo Switch, PS5, Xbox Series X
+
+Target Audience: All Ages; fans of platformers, nostalgic gamers, and indie game enthusiasts
+
+High Concept: A surreal platforming journey through fruit-themed lands where Banana Man must collect Juice Shards and restore flavor to the Fruit Kingdom.
+
+2. Narrative
+
+Setting: Fruit Kingdom – realm made of fantastical environments themed after fruits. Each region has its own biome and guardian.
+
+Main Character: Banana Man – a heroic, agile banana in sneakers and gloves, armed with a boomerang-like peel and strong arms.
+
+Story Premise: A flavor-stealing force called "The Rot" is leeching the essence from the Fruit Kingdom. Guided by the mystical Pineapple Oracle, Banana Man embarks on a quest to retrieve the stolen Juice Shards.
+
+Progression: Five regions must be restored by collecting Juice Shards and defeating corrupted fruit guardians. Between levels, the story unfolds with comic-style cutscenes and whimsical dialogues.
+
+3. Gameplay Mechanics
+
+Core Loop:
+
+Explore themed levels
+
+Collect Juice Shards and hidden items
+
+Unlock abilities and paths
+
+Defeat region bosses
+
+Progress through story
+
+Player Abilities:
+
+Jump / Double Jump
+
+Peel Glide (slow fall)
+
+Banana Boomerang (ranged attack + collect distant items)
+
+Banana Punch (melee combo attack)
+
+Banana Throw (powerful close-range projectile using limited throwable fruits like coconuts or mangos)
+
+Combat System:
+
+Combine punch combos and banana boomerangs
+
+Use throwables for high damage or solving environmental puzzles
+
+Enemies drop Fruit Tokens and sometimes health
+
+Collectables:
+
+Juice Shards (primary objective, 5–7 per level)
+
+Fruit Tokens (used to unlock cosmetics, mini-games, and concept art)
+
+Flavor Seeds (used to activate upgrades in the hub world)
+
+Power-Ups:
+
+Temporary forms (e.g., Chili Mode for speed, Coconut Armor for defense)
+
+Juice Meter: fills up during combat; activates temporary Juice Rush Mode (increased speed, auto-reflect boomerang, invincibility)
+
+4. Level Design & Progression
+
+Level Types:
+
+Platforming stages: large, interconnected 2.5D levels with side paths
+
+Puzzle rooms: focus on using throwables and switches
+
+Combat arenas: defend against waves of fruit monsters
+
+Secret stages: bonus content unlocked with Fruit Tokens
+
+World Themes:
+
+Citrus Cliffs – jungle-like cliffs with ziplines and bouncy oranges
+
+Melon Mines – crystal-filled underground caverns with minecarts
+
+Mango Mirage – sandy desert with mirages and quicksand
+
+Grape Heights – cloud platforms, gusty winds, and floating gardens
+
+Rotten Core – corrupted biome filled with decay, acid pools, and the final boss
+
+Hub World: Fruit Square
+
+Interactable NPCs (fruit-themed characters)
+
+Upgrade trees and Juice Shard monuments
+
+Mini-game kiosk and arcade machine
+
+Cosmetic vendor with alternate banana costumes
+
+5. Art & Visuals
+
+Visual Style: Stylized, saturated colors with a dreamlike quality; chunky and expressive character models
+
+Camera: 2.5D with dynamic angles during special sequences or boss fights
+
+Animation Style: Exaggerated squash-and-stretch, with lots of idle animations and victory poses
+
+UI:
+
+Health displayed as floating fruit hearts
+
+Juice Meter around Banana Man's outline (fills with glow effect)
+
+Collection counters and power-up icons in the corners
+
+Menu and map UI inspired by Mystical Ninja and Klonoa with playful, bouncing icons
+
+6. Sound & Music
+
+Music Style:
+
+Tropical instruments (steel drums, marimbas) in early levels
+
+Surreal ambient synths in later, corrupted zones
+
+Boss music: funky, energetic, with percussion and fruit-themed motifs
+
+Sound Effects:
+
+Punches with comedic 'whomp' sounds
+
+Boomerang whooshes
+
+Collectables make juicy pops and squishes
+
+Voice Snippets:
+
+Banana Man: “Let’s peel out!” “YAH!” “That’s bananas!”
+
+Enemies have cartoon-style grunts and squeaks
+
+7. Enemies & Bosses
+
+Enemy Types:
+
+Fruit Flies – fast, divebombing pests
+
+Rotten Bats – swarm in dark caverns
+
+Moldy Munchers – chase the player and explode on contact
+
+Juice Leeches – steal your Juice Meter charge
+
+Mini-Bosses:
+
+Grape Hydra – regenerates heads unless burned
+
+Citrus Crusher – charges and creates shockwaves
+
+Final Boss:
+
+The Rot – a giant shadowy mold-beast trying to drain the Fruit Kingdom’s life essence
+
+8. UI/UX
+
+HUD Elements:
+
+Heart-based Health
+
+Juice Meterring
+
+Collectable Tracker (on pause screen and end-of-level screen)
+
+GEMS
+
+Menus:
+
+Fruit-themed tabs
+
+Stage select map with character path and unlockable cutscenes
+
+Accessibility:
+
+Button remapping
+
+Subtitles and voice cues
+
+High-contrast mode
+
+9. Technical Details
+
+Engine: Unity with URP or (Nanite for stylized rendering, 2.5D camera)
+
+Resolution: Target 1080p–4K, 60fps
+
+Save System: Autosave between stages; manual saves in hub world
+
+Tools Used: Blender (3D assets), Aseprite (UI mockups), FMOD (audio integration)
+
+10. Production Plan
+
+Team Composition:
+
+Game Designer / Programmer
+
+3D Artist / Animator
+
+Sound & Music Composer
+
+Writer / Narrative Designer
+
+Milestone Roadmap:
+
+Month 1: Movement + Combat Prototype (Punch, Pickup item)
+
+Month 2–3: Citrus Cliffs prototype level + UI mockups
+
+Month 4–6: Melon Mines, Mango Mirage; Implement Juice Shard system
+
+Month 7–9: Grape Heights, Rotten Core; hub world polish
+
+Month 10–12: Testing, optimization, full cutscene integration
+
+
+12. Appendix
+
+Inspirations:
+
+Klonoa 2: Lunatea’s Veil
+
+Kirby 64: The Crystal Shards
+
+Mystical Ninja: Starring Goemon
+
+Donkey Kong Country series
+
+Glossary:
+
+Juice Shards = story-driving collectibles
+
+Fruit Tokens = optional unlockables
+
+Flavor Seeds = ability progression
+
+Juice Meter = power-up energy bar
+
+
